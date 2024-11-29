@@ -7,18 +7,7 @@ export default function VehicleData() {
   useEffect(() => {
     async function fetchVehicleData() {
       try {
-        // Fetch the token from the backend
-        const tokenRes = await fetch("/api/getToken");
-        const tokenData = await tokenRes.json();
-            console.log(tokenData)
-        if (!tokenRes.ok || !tokenData.access_token) {
-          setError(tokenData.error || "Failed to get token");
-          return;
-        }
 
-        const token = tokenData.access_token;
-
-        // Fetch the vehicle data using the token
         const vehicleRes = await fetch("/api/getCar/");
 
         const data = await vehicleRes.json();

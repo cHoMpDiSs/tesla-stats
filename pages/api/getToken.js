@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     params.append("grant_type", "client_credentials");
     params.append("client_id", TESLA_CLIENT_ID);
     params.append("client_secret", TESLA_CLIENT_SECRET);
-    params.append("scope", "openid vehicle_device_data vehicle_cmds vehicle_charging_cmds");
+    params.append("scope", "openid vehicle_device_data vehicle_cmds profile_information offline_access user_data");
 
     try {
         const response = await fetch(TESLA_OAUTH_URL, {
