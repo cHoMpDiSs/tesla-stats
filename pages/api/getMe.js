@@ -16,10 +16,12 @@ export default async function handler(req, res) {
       const userData = await userRes.json();
       console.log("Fetching from:", `${process.env.TESLA_API_URL}/api/1/users/me`);
       console.log("Using token:", token);
-      if (!userRes.ok || !userData) {
-        console.error("Failed to fetch account data:", userData); // Add logging for debugging
+      if (!userRes.ok) {
+        const errorBody = await userRes.text(); // This will give you more info on the error
+        console.error(`Failed to fetch account data: ${userRes.status} - ${errorBody}`);
         return res.status(404).json({ error: "Failed to fetch account data" });
       }
+      
   
       return res.status(200).json(userData);
     } catch (err) {
