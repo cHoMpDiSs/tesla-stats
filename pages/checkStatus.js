@@ -12,7 +12,7 @@ export default function GetPublicKey() {
     setPublicKey(null);
 
     try {
-      const response = await fetch('/api/getPublicKey');
+      const response = await fetch('/api/checkStatus');
       const data = await response.json();
 
       if (response.ok) {
