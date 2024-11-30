@@ -11,16 +11,15 @@ export default async function handler(req, res) {
             }
 
             const accessToken = tokenData.access_token;
-            const apiUrl = 'https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts';
             const domain = 'https://chili-hazel.vercel.app';  // Use the full protocol with domain
-            
+            const apiUrl = `https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts?domain=${domain}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ domain }) // Body with the full URL including protocol
+             // Body with the full URL including protocol
             });
             if (!response.ok) {
                 const errorData = await response.json();
