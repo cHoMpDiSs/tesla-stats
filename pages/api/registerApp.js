@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
             const accessToken = tokenData.access_token; // Corrected variable name
             const apiUrl = 'https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts';
-
+            console.log(accessToken, "TOKEN")
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
