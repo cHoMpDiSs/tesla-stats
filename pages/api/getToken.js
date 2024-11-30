@@ -2,7 +2,7 @@ export default async function handler(req, res) {
     const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL, TESLA_API_URL } = process.env;
 
     // Ensure required environment variables are set
-    if (!TESLA_CLIENT_ID || !TESLA_CLIENT_SECRET || !TESLA_OAUTH_URL || TESLA_API_URL) {
+    if (!TESLA_CLIENT_ID || !TESLA_CLIENT_SECRET || !TESLA_OAUTH_URL || !TESLA_API_URL) {
         return res.status(500).json({ error: "Missing required environment variables" });
     }
 
@@ -26,6 +26,7 @@ export default async function handler(req, res) {
         
         // Check if response is successful and handle errors
         if (response.ok) {
+            console.log("Token retrieved successfully")
             return res.status(200).json(data); // Send the token data as a response
         } else {
             console.error("Error response from Tesla API:", data);
