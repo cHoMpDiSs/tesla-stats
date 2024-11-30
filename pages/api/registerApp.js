@@ -12,22 +12,16 @@ export default async function handler(req, res) {
 
             const accessToken = tokenData.access_token;
             const apiUrl = 'https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts';
-
-            const publicKeyUrl = `https://chili-hazel.vercel.app/.well-known/appspecific/com.tesla.3p.public-key.pem`;
-
-            console.log('Sending request to:', apiUrl);
-            console.log('Authorization:', `Bearer ${accessToken}`);
-            console.log('Public Key URL:', publicKeyUrl);
-            console.log('Body:', JSON.stringify({}));
-
+            const domain = 'https://chili-hazel.vercel.app';  // Use the full protocol with domain
+            
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ domain }) // Body with the full URL including protocol
             });
-
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Error response:', errorData);
