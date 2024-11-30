@@ -27,7 +27,7 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    domain: 'https://chili-hazel.vercel.app/', // Make sure this matches your developer portal setting
+                    domain: 'chili-hazel.vercel.app/', // Make sure this matches your developer portal setting
                     public_key_url: publicKeyUrl, // The URL where your PEM-encoded public key is hosted
                 }),
             });
