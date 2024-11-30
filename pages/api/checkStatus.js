@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    const domain = "https://chili-hazel.vercel.app/"; // Set the domain to the desired URL
+    const domain = "chili-hazel.vercel.app/"; // Set the domain to the desired URL
 
     const { TESLA_API_URL, TESLA_CLIENT_ID, TESLA_CLIENT_SECRET } = process.env;
 
