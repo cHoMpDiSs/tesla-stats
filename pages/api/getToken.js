@@ -1,6 +1,11 @@
 export default async function handler(req, res) {
     const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL } = process.env;
 
+    // Ensure required environment variables are set
+    if (!TESLA_CLIENT_ID || !TESLA_CLIENT_SECRET || !TESLA_OAUTH_URL) {
+        return res.status(500).json({ error: "Missing required environment variables" });
+    }
+
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
     params.append("client_id", TESLA_CLIENT_ID);
@@ -17,13 +22,16 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
+        
+        // Check if response is successful and handle errors
         if (response.ok) {
-            return res.status(200).json(data);
+            return res.status(200).json(data); // Send the token data as a response
         } else {
-            return res.status(400).json({ error: data.error });
+            console.error("Error response from Tesla API:", data);
+            return res.status(400).json({ error: data.error || "Unknown error" }); // Return the error message from Tesla
         }
     } catch (error) {
         console.error("Error fetching Tesla token:", error);
-        return res.status(500).json({ error: "Server error" });
+        return res.status(500).json({ error: "Server error while fetching token" });
     }
 }
