@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL } = process.env;
+    const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL, TESLA_API_URL } = process.env;
 
     // Ensure required environment variables are set
     if (!TESLA_CLIENT_ID || !TESLA_CLIENT_SECRET || !TESLA_OAUTH_URL) {
@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     params.append("grant_type", "client_credentials");
     params.append("client_id", TESLA_CLIENT_ID);
     params.append("client_secret", TESLA_CLIENT_SECRET);
+    params.append("audience", TESLA_API_URL);
     params.append("scope", "openid vehicle_device_data vehicle_cmds profile_information offline_access user_data");
 
     try {
