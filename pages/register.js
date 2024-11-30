@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const RegisterTeslaFleet = () => {
+const Register = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
@@ -68,4 +68,4 @@ const RegisterTeslaFleet = () => {
     );
 };
 
-export default RegisterTeslaFleet;
+export default Register;
