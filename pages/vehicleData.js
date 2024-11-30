@@ -11,7 +11,6 @@ export default function VehicleData() {
         const vehicleRes = await fetch("/api/getCar/");
 
         const data = await vehicleRes.json();
-        console.log(data, "here is car data")
         if (vehicleRes.ok) {
           setVehicleData(data);
         } else {
