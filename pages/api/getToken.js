@@ -1,4 +1,8 @@
 export default async function handler(req, res) {
+    
+    
+    
+    
     const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL, TESLA_API_URL } = process.env;
 
     // Ensure required environment variables are set
