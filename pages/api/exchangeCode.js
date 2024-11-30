@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   params.append('grant_type', 'authorization_code');
   params.append('client_id', TESLA_CLIENT_ID);
   params.append('client_secret', TESLA_CLIENT_SECRET);
-  params.append('redirect_uri', 'https://chili-hazel.vercel.app/authCallback'); // This must match the redirect URI in Tesla's app setup
+  params.append('redirect_uri', 'https://chili-hazel.vercel.app/auth/callback'); // This must match the redirect URI in Tesla's app setup
   params.append('code', code);
 
   try {

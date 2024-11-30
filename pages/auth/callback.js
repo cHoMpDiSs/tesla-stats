@@ -1,7 +1,7 @@
 // pages/authCallback.js
 import { useEffect } from "react";
 
-const AuthCallback = () => {
+const Callback = () => {
   useEffect(() => {
     // Retrieve the authorization code from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -39,4 +39,4 @@ const AuthCallback = () => {
   return <div>Processing your Tesla account...</div>;
 };
 
-export default AuthCallback;
+export default Callback;
