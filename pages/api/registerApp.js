@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json',
                 },
-             // Body with the full URL including protocol
+          
             });
             if (!response.ok) {
                 const errorData = await response.json();
