@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     }
 
     const token = tokenData.access_token;
-
   
+  console.log(tokenData)
     const headers = { Authorization: `Bearer ${token}` };
     const vehicleRes = await fetch(`${process.env.TESLA_API_URL}/api/1/vehicles`, { headers });
     const vehicleData = await vehicleRes.json();
