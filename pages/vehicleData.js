@@ -8,7 +8,7 @@ export default function VehicleData() {
     async function fetchVehicleData() {
       try {
 
-        const vehicleRes = await fetch("api/getCar/");
+        const vehicleRes = await fetch("/api/getCar/");
 
         const data = await vehicleRes.json();
         console.log(data, "here is car data")
