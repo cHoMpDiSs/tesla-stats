@@ -13,7 +13,7 @@ const AuthCallback = () => {
 
     if (code) {
       // Call the API to exchange the code for a token
-      fetch("/api/getToken", {
+      fetch("/api/exchangeCode", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
