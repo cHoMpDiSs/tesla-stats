@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
-    
+    const { code, state } = req.body;
+
     
     
     
@@ -14,7 +15,8 @@ export default async function handler(req, res) {
     params.append("grant_type", "client_credentials");
     params.append("client_id", TESLA_CLIENT_ID);
     params.append("client_secret", TESLA_CLIENT_SECRET);
-    params.append("redirect_uri", "chili-hazel.vercel.app/auth");
+    params.append("code", code)
+    params.append("redirect_uri", "chili-hazel.vercel.app/getMe");
     params.append("audience", "https://fleet-api.prd.na.vn.cloud.tesla.com");
     params.append("scope", "openid vehicle_device_data vehicle_cmds profile_information offline_access user_data");
 
