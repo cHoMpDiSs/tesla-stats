@@ -1,53 +1,69 @@
-// components/UserAccount.js
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-const UserAccount = () => {
-  const [accountData, setAccountData] = useState(null);
+const GetMe = () => {
+  const router = useRouter();
+  const { token } = router.query; // Access the token from the query parameters
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUserAccount = async () => {
-      try {
-        const response = await fetch('/api/getMe'); // Call the API endpoint
+    if (!token) {
+      setError("Missing access token.");
+      setLoading(false);
+      return;
+    }
+
+    // Use the token to fetch user data
+    fetch("/api/getMe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }), // Send the token to the backend
+    })
+      .then(async (response) => {
         if (!response.ok) {
-          throw new Error('Failed to fetch account data');
+          throw new Error("Failed to fetch user data");
         }
         const data = await response.json();
-        setAccountData(data); // Store the account data
-      } catch (err) {
-        setError(err.message); // Handle errors
-      } finally {
-        setLoading(false); // Set loading to false when the request is finished
-      }
-    };
-
-    fetchUserAccount(); // Fetch the data when the component mounts
-  }, []);
+        setUserData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("An error occurred while fetching user data.");
+        setLoading(false);
+      });
+  }, [token]);
 
   if (loading) {
-    return <div>Loading account data...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-xl font-semibold">Loading...</h1>
+        <p className="text-gray-600 mt-2">Fetching user data...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!accountData) {
-    return <div>No account data available.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-xl font-semibold">Error</h1>
+        <p className="text-red-600 mt-2">{error}</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-6 bg-white rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">User Account Information</h2>
-      <div className="space-y-4">
-        <p><strong>Email:</strong> {accountData.email}</p>
-        <p><strong>Account Type:</strong> {accountData.account_type}</p>
-        <p><strong>Car Access:</strong> {accountData.car_access ? 'Yes' : 'No'}</p>
-        {/* You can display other fields depending on the accountData structure */}
-      </div>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-xl font-semibold">User Data</h1>
+      <pre className="mt-4 bg-gray-100 p-4 rounded text-sm text-left">
+        {JSON.stringify(userData, null, 2)}
+      </pre>
     </div>
   );
 };
 
-export default UserAccount;
+export default GetMe;
