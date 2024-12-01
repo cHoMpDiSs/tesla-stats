@@ -1,10 +1,10 @@
 // pages/api/getMe.js
 
 export default async function handler(req, res) {
-  const { code, state } = req.body;
+  const { code } = req.body;
 
   // Validate the incoming data
-  if (!code || !state) {
+  if (!code) {
     console.error("Missing code or state in request body.");
     return res.status(400).json({ error: "Missing code or state" });
   }
