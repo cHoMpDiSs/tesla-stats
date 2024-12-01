@@ -1,15 +1,16 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AuthCallback = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    // Retrieve the authorization code and state from the URL query parameters
+    // Retrieve the authorization code from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-    console.log(code, "CODE")
+
     if (code) {
       // Call the API to exchange the code for a token
       fetch("/api/getToken", {
@@ -24,8 +25,7 @@ const AuthCallback = () => {
             throw new Error("Failed to retrieve token");
           }
           const data = await response.json();
-          console.log("Token data:", data); // Handle the token data (e.g., save it to state or context)
-          setToken(data)
+          setToken(data.access_token); // Assuming the token is returned as `access_token`
           setLoading(false);
         })
         .catch((err) => {
@@ -38,7 +38,7 @@ const AuthCallback = () => {
       setLoading(false);
     }
   }, []);
-  console.log(token, "TOKEN")
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -61,6 +61,16 @@ const AuthCallback = () => {
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-xl font-semibold">Success!</h1>
       <p className="text-gray-600 mt-2">Your Tesla account has been successfully linked.</p>
+      <Link
+        href={{
+          pathname: "/getMe",
+          query: { token },
+        }}
+      >
+        <a className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          My Account
+        </a>
+      </Link>
     </div>
   );
 };
