@@ -11,7 +11,7 @@ const Callback = () => {
     // Check if the code exists in the query params
     if (code) {
       // Send the code to your server to exchange it for an access token
-      fetch('/api/exchangeCode', {
+      fetch('/api/getToken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
