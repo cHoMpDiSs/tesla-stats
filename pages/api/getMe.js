@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
 
   try {
-    const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken${code}`);
+    const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken?code=${code}`);
     const tokenData = await tokenRes.json();
 
     if (!tokenRes.ok || !tokenData.access_token) {
