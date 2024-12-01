@@ -1,7 +1,12 @@
 // pages/api/getMe.js
+
+
 export default async function handler(req, res) {
+    const { code, state } = req.body;
+
+
   try {
-    const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken`);
+    const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken${code}`);
     const tokenData = await tokenRes.json();
 
     if (!tokenRes.ok || !tokenData.access_token) {

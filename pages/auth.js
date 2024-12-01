@@ -2,7 +2,7 @@ import React from 'react';
 
 const TeslaAuth = () => {
     const TESLA_CLIENT_ID =  "7492ef9c-f2fb-4ca2-984c-f2751c2562e7"
-    const TESLA_REDIRECT_URI = "https://chili-hazel.vercel.app/authCallback";  // Replace with your actual redirect URI
+    const TESLA_REDIRECT_URI = "https://chili-hazel.vercel.app/auth/callback";  // Replace with your actual redirect URI
 
     // Function to generate a random state for security purposes
     const generateState = () => {
