@@ -1,10 +1,10 @@
 // pages/api/getMe.js
 
 export default async function handler(req, res) {
-  const { code } = req.body;
+  const { token } = req.body;
 
   // Validate the incoming data
-  if (!code) {
+  if (!token) {
     console.error("Missing code or state in request body.");
     return res.status(400).json({ error: "Missing code or state" });
   }
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     // Use the token to fetch user data from the Tesla API
     const userResponse = await fetch(`${process.env.TESLA_API_URL}/api/1/users/me`, {
       method: "GET",
-      headers: { Authorization: `Bearer ${code}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!userResponse.ok) {
