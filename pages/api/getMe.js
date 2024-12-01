@@ -2,7 +2,7 @@
 
 export default async function handler(req, res) {
   const { token } = req.body;
-
+  console.log(token, "HERE IS THE TOKEN <----------")
   // Validate the incoming data
   if (!token) {
     console.error("Missing code or state in request body.");
