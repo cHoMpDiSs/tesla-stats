@@ -6,13 +6,13 @@ export default async function handler(req, res) {
 
 
   try {
-    const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken?code=${code}`);
-    const tokenData = await tokenRes.json();
+    // const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken?code=${code}`);
+    // const tokenData = await tokenRes.json();
 
-    if (!tokenRes.ok || !tokenData.access_token) {
-      console.error("Failed to get token:", tokenData); // Add logging for debugging
-      return res.status(400).json({ error: "Failed to get token" });
-    }
+    // if (!tokenRes.ok || !tokenData.access_token) {
+    //   console.error("Failed to get token:", tokenData); // Add logging for debugging
+    //   return res.status(400).json({ error: "Failed to get token" });
+    // }
 
     // const token = tokenData.access_token;
     const token = "NA_ad1e3be60d0ee140a8e1d441d934b95701910105eb778017a9949c398ca3"
