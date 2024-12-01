@@ -1,42 +1,64 @@
-// pages/authCallback.js
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const Callback = () => {
+const AuthCallback = () => {
+  const [code, setCode] = useState(null);
+  const [state, setState] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
-    // Retrieve the authorization code from the URL query parameters
+    // Retrieve the authorization code and state from the URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
-    
-    // Check if the code exists in the query params
-    if (code) {
-      // Send the code to your server to exchange it for an access token
-      fetch('/api/getToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code, state }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.access_token) {
-            console.log('Access token received:', data.access_token);
-            // Store the token or proceed to the next step
-            // For example, save the token in localStorage or sessionStorage
-          } else {
-            console.error('Failed to retrieve token:', data);
-          }
-        })
-        .catch(error => {
-          console.error('Error exchanging code:', error);
-        });
-    } else {
-      console.error('Authorization code not found.');
-    }
+    const codeParam = urlParams.get("code");
+    const stateParam = urlParams.get("state");
+
+    setCode(codeParam);
+    setState(stateParam);
   }, []);
 
-  return <div>Processing your Tesla account...</div>;
+  const handleSubmit = () => {
+    if (!code) return;
+
+    setIsSubmitting(true);
+
+    fetch("/getMe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code, state }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response from /getMe:", data);
+        setIsSubmitting(false);
+      })
+      .catch((error) => {
+        console.error("Error submitting code to /getMe:", error);
+        setIsSubmitting(false);
+      });
+  };
+
+  return (
+    <div>
+      <h1>Processing your Tesla account...</h1>
+      <p>{code ? "Authorization code found!" : "No authorization code in URL."}</p>
+      <button
+        onClick={handleSubmit}
+        disabled={!code || isSubmitting}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#007BFF",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: code && !isSubmitting ? "pointer" : "not-allowed",
+          opacity: code && !isSubmitting ? 1 : 0.6,
+        }}
+      >
+        {isSubmitting ? "Processing..." : "Send Code to /getMe"}
+      </button>
+    </div>
+  );
 };
 
-export default Callback;
+export default AuthCallback;
