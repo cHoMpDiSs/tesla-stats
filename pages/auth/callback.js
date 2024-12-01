@@ -18,7 +18,7 @@ const AuthCallback = () => {
     if (codeParam) {
       // Redirect to /getMe with the code and state as query parameters
       router.push({
-        pathname: "/getMe",
+        pathname: "/vehicleData",
         query: { code: codeParam, state: stateParam },
       });
     }
