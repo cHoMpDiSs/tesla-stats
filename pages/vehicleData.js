@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
 export default function VehicleData() {
   const router = useRouter();
   const { token } = router.query; // Access the token from the query parameters
@@ -10,16 +11,13 @@ export default function VehicleData() {
   useEffect(() => {
     async function fetchVehicleData() {
       try {
-
-        const vehicleRes = await fetch("/api/getCar",
-        {
+        const vehicleRes = await fetch("/api/getCar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ token }), // Send the token to the backend
-        }
-        );
+        });
 
         const data = await vehicleRes.json();
         if (vehicleRes.ok) {
@@ -32,8 +30,10 @@ export default function VehicleData() {
       }
     }
 
-    fetchVehicleData();
-  }, []); // Empty dependency array to run only once after component mounts
+    if (token) {
+      fetchVehicleData();
+    }
+  }, [token]); // Trigger effect when `token` is available
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -48,9 +48,11 @@ export default function VehicleData() {
       <h1>Vehicle Data</h1>
       <ul>
         <li>
-          <h2>{vehicleData}</h2>
-          {/* <p>Battery Level: {vehicleData.charge_state.battery_level}%</p>
-          <p>Charging State: {vehicleData.charge_state.charging_state}</p> */}
+          <p><strong>ID:</strong> {vehicleData.id}</p>
+          <p><strong>VIN:</strong> {vehicleData.vin}</p>
+          <p><strong>Color:</strong> {vehicleData.color}</p>
+          <p><strong>State:</strong> {vehicleData.state}</p>
+          {/* Render other fields as needed */}
         </li>
       </ul>
     </div>
