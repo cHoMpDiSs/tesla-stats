@@ -42,7 +42,7 @@ export default function VehicleData() {
   if (!vehicleData) {
     return <p>Loading...</p>;
   }
-
+console.log(vehicleData)
   return (
     <div>
       <h1>Vehicle Data</h1>
