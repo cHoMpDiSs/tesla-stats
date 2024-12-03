@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 export default function VehicleData() {
   const router = useRouter();
   const { token } = router.query; // Access the token from the query parameters
