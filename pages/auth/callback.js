@@ -75,7 +75,7 @@ const AuthCallback = () => {
       </Link>
       <Link
         href={{
-          pathname: "/getCar",
+          pathname: "/vehicleData",
           query: { token },
         }}
       >
