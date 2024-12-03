@@ -1,6 +1,9 @@
+"use client"
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 export default function VehicleData() {
+  const router = useRouter();
+  const { token } = router.query; // Access the token from the query parameters
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -8,7 +11,15 @@ export default function VehicleData() {
     async function fetchVehicleData() {
       try {
 
-        const vehicleRes = await fetch("/api/getCar/");
+        const vehicleRes = await fetch("/api/getCar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }), // Send the token to the backend
+        }
+        );
 
         const data = await vehicleRes.json();
         if (vehicleRes.ok) {
