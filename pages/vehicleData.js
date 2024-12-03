@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 export default function VehicleData() {
   const router = useRouter();
-  const { token } = router.query; // Access the token from the query parameters
+
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -16,7 +16,7 @@ export default function VehicleData() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ token }), // Send the token to the backend
+          // body: JSON.stringify({ token }), // Send the token to the backend
         });
 
         const data = await vehicleRes.json();
@@ -30,10 +30,10 @@ export default function VehicleData() {
       }
     }
 
-    if (token) {
+  
       fetchVehicleData();
-    }
-  }, [token]); // Trigger effect when `token` is available
+    
+  }, []); // Trigger effect when `token` is available
 
   if (error) {
     return <p>Error: {error}</p>;
