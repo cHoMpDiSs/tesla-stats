@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     // const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken`);
     // const tokenData = await tokenRes.json();
     
-    if (!tokenRes.ok || !tokenData.access_token) {
+    if (!token) {
       return res.status(400).json({ error: "Failed to get token" });
     }
 
