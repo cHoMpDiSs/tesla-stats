@@ -48,9 +48,9 @@ export default function VehicleData() {
       <h1>Vehicle Data</h1>
       <ul>
         <li>
-          <h2>{vehicleData.display_name}</h2>
-          <p>Battery Level: {vehicleData.charge_state.battery_level}%</p>
-          <p>Charging State: {vehicleData.charge_state.charging_state}</p>
+          <h2>{vehicleData}</h2>
+          {/* <p>Battery Level: {vehicleData.charge_state.battery_level}%</p>
+          <p>Charging State: {vehicleData.charge_state.charging_state}</p> */}
         </li>
       </ul>
     </div>
