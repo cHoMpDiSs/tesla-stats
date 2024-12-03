@@ -48,10 +48,10 @@ console.log(vehicleData)
       <h1>Vehicle Data</h1>
       <ul>
         <li>
-          <p><strong>ID:</strong> {vehicleData.id}</p>
-          <p><strong>VIN:</strong> {vehicleData.vin}</p>
-          <p><strong>Color:</strong> {vehicleData.color}</p>
-          <p><strong>State:</strong> {vehicleData.state}</p>
+          <p><strong>ID:</strong> {vehicleData[0].id}</p>
+          <p><strong>VIN:</strong> {vehicleData[0].vin}</p>
+          <p><strong>Color:</strong> {vehicleData[0].color}</p>
+          <p><strong>State:</strong> {vehicleData[0].state}</p>
           {/* Render other fields as needed */}
         </li>
       </ul>
