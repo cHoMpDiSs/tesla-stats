@@ -43,21 +43,20 @@ export default function VehicleData() {
     return <p>Loading...</p>;
   }
 console.log(vehicleData)
-  return (
-    <div>
-      <h1>Vehicle Data</h1>
-      <ul>
-        {vehicleData.map((vehicle)=>{
-                 <li>
-                 <p><strong>ID:</strong> {vehicle.id}</p>
-                 <p><strong>VIN:</strong> {vehicle.vin}</p>
-                 <p><strong>Color:</strong> {vehicle.color}</p>
-                 <p><strong>State:</strong> {vehicle.state}</p>
-                 {/* Render other fields as needed */}
-               </li>
-        })}
-   
-      </ul>
-    </div>
-  );
+return (
+  <div>
+    <h1>Vehicle Data</h1>
+    <ul>
+      {vehicleData.map((vehicle) => (
+        <li key={vehicle.id}>
+          <p><strong>Display Name:</strong> {vehicle.display_name}</p>
+          <p><strong>ID:</strong> {vehicle.id}</p>
+          <p><strong>VIN:</strong> {vehicle.vin}</p>
+          <p><strong>Color:</strong> {vehicle.color}</p>
+          <p><strong>State:</strong> {vehicle.state}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 }
