@@ -47,13 +47,16 @@ console.log(vehicleData)
     <div>
       <h1>Vehicle Data</h1>
       <ul>
-        <li>
-          <p><strong>ID:</strong> {vehicleData[0].id}</p>
-          <p><strong>VIN:</strong> {vehicleData[0].vin}</p>
-          <p><strong>Color:</strong> {vehicleData[0].color}</p>
-          <p><strong>State:</strong> {vehicleData[0].state}</p>
-          {/* Render other fields as needed */}
-        </li>
+        {vehicleData.map((vehicle)=>{
+                 <li>
+                 <p><strong>ID:</strong> {vehicle.id}</p>
+                 <p><strong>VIN:</strong> {vehicle.vin}</p>
+                 <p><strong>Color:</strong> {vehicle.color}</p>
+                 <p><strong>State:</strong> {vehicle.state}</p>
+                 {/* Render other fields as needed */}
+               </li>
+        })}
+   
       </ul>
     </div>
   );

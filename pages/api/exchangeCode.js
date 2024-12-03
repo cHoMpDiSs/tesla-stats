@@ -1,8 +1,9 @@
 
+import {cookies} from 'next/headers'
 
 export default async function handler(req, res) {
   const { code, state } = req.body;
-
+  const cookieStore = cookies();
   if (!code) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }
@@ -27,9 +28,16 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-
+  
+    
     if (response.ok) {
-      return res.status(200).json(data); // Return the token response
+      cookieStore.set('token', data, {
+        httpOnly: true, // Prevent client-side JavaScript access
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        path: '/', // Make the cookie available across the app
+        sameSite: 'strict', // Prevent CSRF
+      });
+      return res.status(200).json({success: "Token Secured"}); // Return the token response
     } else {
       return res.status(400).json({ error: data.error || 'Error exchanging code for token' });
     }

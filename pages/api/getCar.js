@@ -1,6 +1,8 @@
+import {cookies} from 'next/headers'
+
 export default async function handler(req, res) {
-  const { token } = req.body;
- 
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value;
     
 
     // Validate token
