@@ -42,7 +42,9 @@ const AuthCallback = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-xl font-semibold">Processing your Tesla account...</h1>
+        <h1 className="text-xl font-semibold">
+          Processing your Tesla account...
+        </h1>
         <p className="text-gray-600 mt-2">Exchanging code for token...</p>
       </div>
     );
@@ -60,16 +62,16 @@ const AuthCallback = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-xl font-semibold">Success!</h1>
-      <p className="text-gray-600 mt-2">Your Tesla account has been successfully linked.</p>
+      <p className="text-gray-600 mt-2">
+        Your Tesla account has been successfully linked.
+      </p>
       <Link
         href={{
           pathname: "/getMe",
           query: { token },
         }}
       >
-        <a className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          My Account
-        </a>
+        My Account
       </Link>
       <Link
         href={{
@@ -77,9 +79,7 @@ const AuthCallback = () => {
           query: { token },
         }}
       >
-        <a className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          My Car
-        </a>
+        My Car
       </Link>
     </div>
   );
