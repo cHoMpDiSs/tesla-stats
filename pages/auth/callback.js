@@ -68,7 +68,7 @@ const AuthCallback = () => {
       <Link
         href={{
           pathname: "/getMe",
-          query: { token },
+      
         }}
       >
         My Account
@@ -76,7 +76,7 @@ const AuthCallback = () => {
       <Link
         href={{
           pathname: "/vehicleData",
-          query: { token },
+       
         }}
       >
         My Car
