@@ -20,7 +20,7 @@ export default function Home() {
             <h3>Documentation &rarr;</h3>
             <p></p>
           </div>
-      <Link to="/auth">Log in</Link>
+      <Link href="/auth">Log in</Link>
         
         </div>
       </main>
