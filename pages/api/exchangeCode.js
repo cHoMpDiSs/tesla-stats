@@ -1,5 +1,4 @@
-// pages/api/exchange-code.js
-import { NextApiRequest, NextApiResponse } from "next";
+
 
 export default async function handler(req, res) {
   const { code, state } = req.body;
