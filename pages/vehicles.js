@@ -11,12 +11,11 @@ export default function VehicleData() {
   useEffect(() => {
     async function fetchVehicleData() {
       try {
-        const vehicleRes = await fetch("/api/getCar", {
+        const vehicleRes = await fetch("/api/vehicles", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify({ token }), // Send the token to the backend
         });
 
         const data = await vehicleRes.json();
@@ -42,7 +41,7 @@ export default function VehicleData() {
   if (!vehicleData) {
     return <p>Loading...</p>;
   }
-console.log(vehicleData)
+
 return (
   <div>
     <h1>Vehicle Data</h1>
@@ -54,6 +53,9 @@ return (
           <p><strong>VIN:</strong> {vehicle.vin}</p>
           <p><strong>Color:</strong> {vehicle.color}</p>
           <p><strong>State:</strong> {vehicle.state}</p>
+          <Link to={`/vehicle?vehicleId=${vehicle.id}`}>
+          
+          </Link>
         </li>
       ))}
     </ul>

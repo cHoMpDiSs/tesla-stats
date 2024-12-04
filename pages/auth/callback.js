@@ -67,7 +67,7 @@ const AuthCallback = () => {
       </p>
       <Link
         href={{
-          pathname: "/getMe",
+          pathname: "/account",
       
         }}
       >
@@ -75,7 +75,7 @@ const AuthCallback = () => {
       </Link>
       <Link
         href={{
-          pathname: "/vehicleData",
+          pathname: "/vehicles",
        
         }}
       >

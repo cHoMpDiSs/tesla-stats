@@ -16,7 +16,7 @@ const GetMe = () => {
     }
 
     // Use the token to fetch user data
-    fetch("/api/getMe", {
+    fetch("/api/account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
