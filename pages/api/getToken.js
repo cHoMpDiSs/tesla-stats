@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    const { code, state } = req.body;
+    const { code } = req.body;
 
     
     
