@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const cookies = parseCookies(req.headers.cookie);
   const token = cookies.token;
-    console.log(id, "API VEHICLE ID")
+  
   // Validate token
   if (!token) {
     return res.status(400).json({ error: "Failed to get token" });
@@ -19,12 +19,21 @@ export default async function handler(req, res) {
 
     // Fetch specific vehicle data
     const vehicleData = await fetch(
-      `${process.env.TESLA_API_URL}/api/1/vehicles/${id}/vehicle_data`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        `${process.env.TESLA_API_URL}/api/1/vehicles/${id}/vehicle_data`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      
+      console.log("Status:", vehicleData.status);
+      console.log("Headers:", vehicleData.headers);
+      const textResponse = await vehicleData.text(); // Read as text to inspect raw response
+      console.log("Raw response:", textResponse);
+      
+      if (!vehicleData.ok) {
+        return res.status(500).json({ error: "Failed to fetch vehicle data" });
       }
-    );
 
     // Parse car data response
     if (!vehicleData.ok) {
