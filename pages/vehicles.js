@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function VehicleData() {
   const router = useRouter();
@@ -54,7 +55,7 @@ return (
           <p><strong>Color:</strong> {vehicle.color}</p>
           <p><strong>State:</strong> {vehicle.state}</p>
           <Link to={`/vehicle?vehicleId=${vehicle.id}`}>
-          
+          {vehicle.display_name}
           </Link>
         </li>
       ))}
