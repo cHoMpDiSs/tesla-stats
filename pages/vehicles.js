@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function VehicleData() {
-  const router = useRouter();
+
 
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
@@ -34,7 +34,7 @@ export default function VehicleData() {
       fetchVehicleData();
     
   }, []); // Trigger effect when `token` is available
-
+  console.log(vehicleData)
   if (error) {
     return <p>Error: {error}</p>;
   }
