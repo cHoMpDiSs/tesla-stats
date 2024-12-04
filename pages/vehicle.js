@@ -3,16 +3,16 @@ import { useRouter } from 'next/router';
 
 const Vehicle = () => {
   const router = useRouter();
-  const { vehicleId } = router.query; // Extract vehicleId from URL params
+  const { id } = router.query; // Extract vehicleId from URL params
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!vehicleId) return; // Wait until vehicleId is available
+    if (!id) return; // Wait until vehicleId is available
 
     const fetchVehicleData = async () => {
       try {
-        const res = await fetch(`/api/vehicleData?vehicleId=${vehicleId}`);
+        const res = await fetch(`/api/vehicleData?id=${id}`);
         if (!res.ok) {
           throw new Error('Failed to fetch vehicle data');
         }
@@ -24,7 +24,7 @@ const Vehicle = () => {
     };
 
     fetchVehicleData();
-  }, [vehicleId]); // Refetch if vehicleId changes
+  }, [id]); // Refetch if vehicleId changes
 
   if (error) {
     return <p>Error: {error}</p>;
