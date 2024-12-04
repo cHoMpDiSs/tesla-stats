@@ -54,7 +54,7 @@ return (
           <p><strong>VIN:</strong> {vehicle.vin}</p>
           <p><strong>Color:</strong> {vehicle.color}</p>
           <p><strong>State:</strong> {vehicle.state}</p>
-          <Link to={`/vehicle?vehicleId=${vehicle.id}`}>
+          <Link href={`/vehicle?vehicleId=${vehicle.id}`}>
           {vehicle.display_name}
           </Link>
         </li>
