@@ -1,14 +1,18 @@
 // pages/api/getMe.js
 
 export default async function handler(req, res) {
-  const { token } = req.body;
-  console.log(token, "HERE IS THE TOKEN <----------")
-  // Validate the incoming data
-  if (!token) {
-    console.error("Missing code or state in request body.");
-    return res.status(400).json({ error: "Missing code or state" });
-  }
+  const parseCookies = (cookieHeader = '') =>
+  Object.fromEntries(
+    cookieHeader.split('; ').map((cookie) => cookie.split('='))
+  );
 
+  const cookies = parseCookies(req.headers.cookie);
+  const token = cookies.token;
+
+  // Validate token
+  if (!token) {
+    return res.status(400).json({ error: "Failed to get token" });
+  }
   try {
     // Exchange the code for a token directly with the Tesla API
       // const tokenResponse = await fetch(`${process.env.TESLA_API_URL}/oauth2/v3/token`, {
