@@ -3,17 +3,13 @@ import { useEffect, useState } from "react";
 
 const GetMe = () => {
   const router = useRouter();
-  const { token } = router.query; // Access the token from the query parameters
+  
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!token) {
-      setError("Missing access token.");
-      setLoading(false);
-      return;
-    }
+ 
 
     // Use the token to fetch user data
     fetch("/api/account", {
