@@ -31,7 +31,7 @@ const GetMe = () => {
         setError("An error occurred while fetching user data.");
         setLoading(false);
       });
-  }, [token]);
+  }, []);
 
   if (loading) {
     return (
