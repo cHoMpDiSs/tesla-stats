@@ -17,7 +17,6 @@ const GetMe = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token }), // Send the token to the backend
     })
       .then(async (response) => {
         if (!response.ok) {
