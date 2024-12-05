@@ -14,10 +14,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Failed to get token" });
   }
 
-    // Validate token
-    if (!token) {
-      return res.status(400).json({ error: "Failed to get token" });
-    }
     try {
     // Fetch vehicle list
     const vehicleRes = await fetch(`${process.env.TESLA_API_URL}/api/1/vehicles`, {

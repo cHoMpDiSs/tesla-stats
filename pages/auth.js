@@ -1,9 +1,9 @@
 import React from 'react';
 
 const TeslaAuth = () => {
-    const TESLA_CLIENT_ID =  "7492ef9c-f2fb-4ca2-984c-f2751c2562e7"
-    const TESLA_REDIRECT_URI = "https://chili-hazel.vercel.app/auth/callback";  // Replace with your actual redirect URI
 
+    console.log(process.env.NEXT_PUBLIC_CLIENT_ID, "<-------client id")
+    console.log(process.env.NEXT_PUBLIC_REDIRECT_URI)
     // Function to generate a random state for security purposes
     const generateState = () => {
         return Math.random().toString(36).substring(2, 15);  // Random string for state
@@ -15,7 +15,7 @@ const TeslaAuth = () => {
 
     // Function to initiate the authorization flow
     const handleAuthRedirect = () => {
-        const authorizationUrl = `https://auth.tesla.com/oauth2/v3/authorize?client_id=${TESLA_CLIENT_ID}&locale=en-US&prompt=login&redirect_uri=${TESLA_REDIRECT_URI}&response_type=code&scope=${encodeURIComponent(scope)}&state=${state}`;
+        const authorizationUrl = `https://auth.tesla.com/oauth2/v3/authorize?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&locale=en-US&prompt=login&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&response_type=code&scope=${encodeURIComponent(scope)}&state=${state}`;
 
         // Store the state in sessionStorage or localStorage to verify it later
         sessionStorage.setItem('state', state);

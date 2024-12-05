@@ -8,14 +8,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }
 
-  const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL } = process.env;
+  const { TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, TESLA_OAUTH_URL, REDIRECT_URI } = process.env;
 
   // Prepare the request to exchange the authorization code for a token
   const params = new URLSearchParams();
   params.append('grant_type', 'authorization_code');
   params.append('client_id', TESLA_CLIENT_ID);
   params.append('client_secret', TESLA_CLIENT_SECRET);
-  params.append('redirect_uri', 'https://chili-hazel.vercel.app/auth/callback'); // This must match the redirect URI in Tesla's app setup
+  params.append('redirect_uri',REDIRECT_URI ); // This must match the redirect URI in Tesla's app setup
   params.append('code', code);
 
   try {
