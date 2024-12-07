@@ -13,10 +13,10 @@ const Vehicle = () => {
     const fetchVehicleData = async () => {
       try {
         const res = await fetch(`/api/vehicleData?id=${id}`);
-        if (!res.ok) {
-          throw new Error('Failed to fetch vehicle data');
-        }
         const data = await res.json();
+        if(data.error){
+          setError(data.error)
+        }
         setVehicleData(data);
       } catch (err) {
         setError(err.message);
@@ -24,7 +24,7 @@ const Vehicle = () => {
     };
 
     fetchVehicleData();
-  }, [id]); // Refetch if vehicleId changes
+  }, [id]); 
 
   if (error) {
     return <p>Error: {error}</p>;
