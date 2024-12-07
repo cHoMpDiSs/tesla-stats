@@ -5,10 +5,11 @@ import Link from "next/link";
 
 export default function VehicleData() {
 
-
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
 
+
+  const router = useRouter()
   useEffect(() => {
     async function fetchVehicleData() {
       try {
@@ -33,15 +34,40 @@ export default function VehicleData() {
   
       fetchVehicleData();
     
-  }, []); // Trigger effect when `token` is available
+  }, []);
   console.log(vehicleData)
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
 
-  if (!vehicleData) {
+  if (error == "token expired"){
+    router.push("/auth")
+  }
+ 
+  if (vehicleData == null) {
     return <p>Loading...</p>;
   }
+  else if (error) {
+    return <p>Error: {error}</p>;
+  }
+async function wakeUp(vin){
+  try {
+    const vehicleRes = await fetch(`/api/wakeUp?vin=${vin}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await vehicleRes.json();
+    if (vehicleRes.ok) {
+      router.reload()
+    } else {
+      setError(data.error || "Failed to  wake vehicle");
+    }
+  } catch (err) {
+    setError(err.message || "Failed to wake vehicle");
+  }
+}
+
+  
 
 return (
   <div>
@@ -49,14 +75,19 @@ return (
     <ul>
       {vehicleData.map((vehicle) => (
         <li key={vehicle.id}>
+           {vehicle.display_name}
           <p><strong>Display Name:</strong> {vehicle.display_name}</p>
           <p><strong>ID:</strong> {vehicle.id}</p>
           <p><strong>VIN:</strong> {vehicle.vin}</p>
           <p><strong>Color:</strong> {vehicle.color}</p>
           <p><strong>State:</strong> {vehicle.state}</p>
-          <Link href={`/vehicle?id=${vehicle.id}`}>
-          {vehicle.display_name}
-          </Link>
+          {vehicle.state == "offline" || vehicle.state == "asleep" ? 
+          <button onClick={() => wakeUp(vehicle.vin)}>Wake Up</button> :
+              <Link href={`/vehicle?id=${vehicle.id}`}>
+                    {vehicle.display_name} data
+              </Link>
+          }
+      
         </li>
       ))}
     </ul>

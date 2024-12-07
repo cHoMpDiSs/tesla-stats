@@ -23,10 +23,15 @@ export default async function handler(req, res) {
         }
       );
   
-      if (!vehicleData.ok) {
-        const errorText = await vehicleData.text(); // Read response for error details
-        console.error("Failed to fetch vehicle data:", errorText);
+      if (!vehicleData.ok || vehicleData.response === null) {
+        const errorText = await vehicleData.json(); 
+        console.error(errorText);
+        if(errorText.error === "vehicle unavailable: vehicle is offline or asleep"
+        ) {
+          return res.status(500).json({ error: "Vehicle offline or asleep" });
+        }else{
         return res.status(500).json({ error: "Failed to fetch vehicle data" });
+        }
       }
   
       // Parse the response JSON safely

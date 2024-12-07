@@ -21,36 +21,23 @@ export default async function handler(req, res) {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    // Parse vehicle response
-    if (!vehicleRes.ok) {
-      return res.status(404).json({ error: "Failed to fetch vehicles" });
-    }
     const vehicleData = await vehicleRes.json();
 
+    console.log(vehicleData)
+    // Parse vehicle response
+    // if (!vehicleRes.ok) {
+    //   return res.status(404).json({ error: "Failed to fetch vehicles" });
+    // }
+    if (vehicleData.error == 'token expired (401)'){
+      return(res.status(404).json({error:"token expired"}))
+    }
+
     // Validate vehicle data
-    if (!vehicleData.response || vehicleData.response.length === 0) {
+    else if (!vehicleData.response || vehicleData.response.length === 0) {
       return res.status(404).json({ error: "No vehicles found" });
     }
 
-    // const vehicleId = vehicleData.response[0].id;
-
-    // // Fetch specific vehicle data
-    // const carDataRes = await fetch(`${process.env.TESLA_API_URL}/api/1/vehicles/${vehicleId}/vehicle_data`, {
-    //   method: "GET",
-    //   headers: { Authorization: `Bearer ${token}` },
-    // });
-
-    // // Parse car data response
-    // if (!carDataRes.ok) {
-    //   return res.status(500).json({ error: "Failed to fetch vehicle data" });
-    // }
-    // const carData = await carDataRes.json();
-
-    // // Validate car data
-    // if (!carData.response) {
-    //   return res.status(500).json({ error: "Invalid vehicle data response" });
-    // }
-
+ 
     // Return car data
     return res.status(200).json(vehicleData.response);
 

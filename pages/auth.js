@@ -1,9 +1,6 @@
 import React from 'react';
 
 const TeslaAuth = () => {
-
-    console.log(process.env.NEXT_PUBLIC_CLIENT_ID, "<-------client id")
-    console.log(process.env.NEXT_PUBLIC_REDIRECT_URI)
     // Function to generate a random state for security purposes
     const generateState = () => {
         return Math.random().toString(36).substring(2, 15);  // Random string for state
