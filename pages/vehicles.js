@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Button from "@mui/material/Button";
 import Link from "next/link";
 
 export default function VehicleData() {
@@ -67,6 +68,9 @@ async function wakeUp(vin){
   }
 }
 
+const goToVehiclePage = (id) =>{
+  router.push(`/vehicle?id=${id}`)
+}
   
 
 return (
@@ -82,10 +86,10 @@ return (
           <p><strong>Color:</strong> {vehicle.color}</p>
           <p><strong>State:</strong> {vehicle.state}</p>
           {vehicle.state == "offline" || vehicle.state == "asleep" ? 
-          <button onClick={() => wakeUp(vehicle.vin)}>Wake Up</button> :
-              <Link href={`/vehicle?id=${vehicle.id}`}>
+          <Button variant="contained" onClick={() => wakeUp(vehicle.vin)}>Wake Up</Button> :
+              <Button onClick={() =>{goToVehiclePage(vehicle.id)}}>
                     {vehicle.display_name} data
-              </Link>
+              </Button>
           }
       
         </li>
