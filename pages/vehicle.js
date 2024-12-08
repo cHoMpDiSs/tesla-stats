@@ -64,7 +64,7 @@ const Vehicle = () => {
   return (
     <div>
       <h1>Vehicle Details</h1>
-      <Button onClick={() => {makeStinky}} variant="contained">
+      <Button onClick={() => {makeStinky()}} variant="contained">
        Fart</Button>
       {detailsToShow.map((field) => (
         vehicleData[field] ? (

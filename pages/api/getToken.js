@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     params.append("code", code)
     params.append("redirect_uri", "chili-hazel.vercel.app/auth/callback");
     params.append("audience", "https://fleet-api.prd.na.vn.cloud.tesla.com");
-    params.append("scope", "openid vehicle_device_data vehicle_cmds profile_information offline_access user_data");
+    params.append("scope", "openid vehicle_device_data vehicle_cmds profile_information control_vehicle offline_access user_data");
 
     try {
         const response = await fetch(TESLA_OAUTH_URL, {
