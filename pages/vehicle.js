@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from '@mui/material';
 
 const Vehicle = () => {
   const router = useRouter();
@@ -26,6 +27,18 @@ const Vehicle = () => {
     fetchVehicleData();
   }, [id]); 
 
+ const makeStinky = async () =>{
+  try {
+    const res = await fetch(`/api/fart?id=${id}`);
+    const data = await res.json();
+    if(data.error){
+      setError(data.error)
+    }
+  } catch (err) {
+    setError(err.message);
+  }
+ }
+
   if (error) {
     return <p>Error: {error}</p>;
   }
@@ -51,6 +64,8 @@ const Vehicle = () => {
   return (
     <div>
       <h1>Vehicle Details</h1>
+      <Button onClick={() => {makeStinky}} variant="contained">
+       Fart</Button>
       {detailsToShow.map((field) => (
         vehicleData[field] ? (
           <div key={field}>

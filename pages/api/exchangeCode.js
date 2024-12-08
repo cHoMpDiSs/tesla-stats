@@ -1,9 +1,12 @@
 
-
+import { cookies } from 'next/headers';
 
 export default async function handler(req, res) {
   const { code, state } = req.body;
-
+  const token = req.cookies.token;
+  if (token){
+    return res.status(200).json({success: "token already secured"})
+  }
   if (!code) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }

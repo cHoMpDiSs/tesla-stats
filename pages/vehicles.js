@@ -87,7 +87,7 @@ return (
           <p><strong>State:</strong> {vehicle.state}</p>
           {vehicle.state == "offline" || vehicle.state == "asleep" ? 
           <Button variant="contained" onClick={() => wakeUp(vehicle.vin)}>Wake Up</Button> :
-              <Button onClick={() =>{goToVehiclePage(vehicle.id)}}>
+              <Button variant="contained" onClick={() =>{goToVehiclePage(vehicle.id)}}>
                     {vehicle.display_name} data
               </Button>
           }
