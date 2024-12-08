@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         console.error("Failed to trigger fart noise:", error);
       }
   
-      return res.status(200).json(carData.response);
+      return res.status(200).json(vehicleData.response);
     } catch (err) {
       console.error("Error farting vehicle:", err);
       return res.status(500).json({ error: "Internal server error" });

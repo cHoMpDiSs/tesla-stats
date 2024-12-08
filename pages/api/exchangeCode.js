@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     
     if (response.ok) {
       res.setHeader('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure=${process.env.NODE_ENV === 'production'}; SameSite=Strict`);;
-      return res.status(200).json({success: "Token Secured"}); // Return the token response
+      return res.status(200).json({success: "Token Secured"}); 
     } else {
       return res.status(400).json({ error: data.error || 'Error exchanging code for token' });
     }
