@@ -1,15 +1,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 
 const AuthCallback = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState("");
-
+  const router = useRouter()
   useEffect(() => {
-    // Retrieve the authorization code from the URL query parameters
+  
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
+
 
     if (code) {
       // Call the API to exchange the code for a token
@@ -25,7 +28,7 @@ const AuthCallback = () => {
             throw new Error("Failed to retrieve token");
           }
           const data = await response.json();
-          setToken(data.access_token); // Assuming the token is returned as `access_token`
+          setToken(data.access_token);
           setLoading(false);
         })
         .catch((err) => {
@@ -37,7 +40,7 @@ const AuthCallback = () => {
       setError("Authorization code not found.");
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   if (loading) {
     return (
@@ -59,28 +62,30 @@ const AuthCallback = () => {
     );
   }
 
+  const redirectTo = (link) =>{
+    router.push(`/${link}`)
+  }
+
+
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-xl font-semibold">Success!</h1>
       <p className="text-gray-600 mt-2">
         Your Tesla account has been successfully linked.
       </p>
-      <Link
-        href={{
-          pathname: "/account",
-      
-        }}
+      <Button
+      variant="contained"
+        onClick={() =>{redirectTo('account')}}
       >
         My Account
-      </Link>
-      <Link
-        href={{
-          pathname: "/vehicles",
-       
-        }}
+      </Button>
+      <Button
+      variant="contained"
+         onClick={() =>{redirectTo('vehicles')}}
       >
-        My Car
-      </Link>
+       Vehicles
+      </Button>
     </div>
   );
 };

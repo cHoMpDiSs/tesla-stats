@@ -1,32 +1,37 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import Link from 'next/link';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import Image from "next/image";
+import modelY from "../public/images/y.png";
 export default function Home() {
+  const router = useRouter();
+
+  const logIn = () => {
+    router.push("/auth");
+  };
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Telsa Tracker</title>
+        <title>Telsa Stats</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1 className={styles.title}>
-          Welcome to <p href="">Tesla Tracker!</p>
-        </h1>
+        <h1 className="font-thin font-2xl">Tesla Stats</h1>
 
-  
         <div className={styles.grid}>
           <div className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p></p>
+            <Image src={modelY} />
           </div>
-      <Link href="/auth">Log in</Link>
-        
+          <Button onClick={() => logIn()} variant="contained">
+            Log in
+          </Button>
         </div>
       </main>
 
@@ -36,7 +41,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
         </a>
       </footer>
@@ -73,15 +78,8 @@ export default function Home() {
           border-radius: 5px;
           padding: 0.75rem;
           font-size: 1.1rem;
-          font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
+          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
         }
       `}</style>
 
@@ -90,17 +88,8 @@ export default function Home() {
         body {
           padding: 0;
           margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
         }
         * {
