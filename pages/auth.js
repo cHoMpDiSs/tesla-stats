@@ -18,7 +18,7 @@ const TeslaAuth = () => {
       process.env.NEXT_PUBLIC_CLIENT_ID
     }&locale=en-US&prompt=login&redirect_uri=${
       process.env.NEXT_PUBLIC_REDIRECT_URI
-    }&response_type=code&scope=${encodeURIComponent(scope)}&state=${state}`;
+    }&response_type=code&scope=${scope}&state=${state}`;
 
     // Store the state in sessionStorage or localStorage to verify it later
     sessionStorage.setItem("state", state);

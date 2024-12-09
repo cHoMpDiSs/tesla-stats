@@ -4,12 +4,13 @@ import { Button } from '@mui/material';
 
 const Vehicle = () => {
   const router = useRouter();
-  const { id } = router.query; // Extract vehicleId from URL params
+  const { id, vin } = router.query;
+
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!id) return; // Wait until vehicleId is available
+    if (!id) return;
 
     const fetchVehicleData = async () => {
       try {
@@ -29,18 +30,42 @@ const Vehicle = () => {
 
  const makeStinky = async () =>{
   try {
-    const res = await fetch(`/api/fart?id=${id}`);
+    const res = await fetch(`/api/fart?id=${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await res.json();
     if(data.error){
-      setError(data.error)
+      setError(data.error || "Failed to make a stinky")
     }
   } catch (err) {
-    setError(err.message);
+    setError(err.message || "Failed to make a stinky");
   }
  }
+ async function wakeUp(){
+  try {
+    const vehicleRes = await fetch(`/api/wakeUp?vin=${vin}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (error) {
-    return <p>Error: {error}</p>;
+    const data = await vehicleRes.json();
+    if (vehicleRes.ok) {
+      router.reload()
+    } else {
+      setError(data.error || "Failed to  wake vehicle");
+    }
+  } catch (err) {
+    setError(err.message || "Failed to wake vehicle");
+  }
+}
+console.log(vin)
+  if (error == "Vehicle offline or asleep") {
+    return   <Button variant="contained" onClick={() => wakeUp()}>Wake Up</Button> ;
   }
 
   if (!vehicleData) {

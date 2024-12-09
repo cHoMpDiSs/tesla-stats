@@ -12,7 +12,7 @@ const AuthCallback = () => {
   
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-
+    console.log(code, "CODE")
 
     if (code) {
       // Call the API to exchange the code for a token
@@ -37,7 +37,7 @@ const AuthCallback = () => {
           setLoading(false);
         });
     } else {
-      setError("Authorization code not found.");
+      router.push("/auth")
       setLoading(false);
     }
   }, [token]);

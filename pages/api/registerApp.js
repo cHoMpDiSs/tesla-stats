@@ -11,7 +11,7 @@ export default async function handler(req, res) {
             }
 
             const accessToken = tokenData.access_token;
-            const domain = 'chili-hazel.vercel.app';  // Use the full protocol with domain
+            const domain = 'teslastats.dev';  
             const apiUrl = `https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts?domain=${domain}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
