@@ -2,13 +2,14 @@ export default async function handler(req, res) {
     const { id } = req.query;
   
     const token = req.cookies.token;
+    console.log("TOKEN", token , "--------")
   
     if (!token) {
       return res.status(400).json({ error: "Failed to get token" });
     }
   
     try {
-      const vehicleData = await fetch(
+      const fartData = await fetch(
         `${process.env.TESLA_API_URL}/api/1/vehicles/${id}/command/remote_boombox`,
         {
           method: "POST", 
@@ -17,20 +18,19 @@ export default async function handler(req, res) {
             "Content-Type": "application/json", 
           },
           body: JSON.stringify({
-            message_type: 0,
-            message: "",
+            sound: 0,
           }),
         }
       );
       
-      if (vehicleData.ok) {
+      if (fartData.ok) {
         console.log("Fart noise triggered successfully!");
       } else {
-        const error = await vehicleData.json();
+        const error = await fartData.json();
         console.error("Failed to trigger fart noise:", error);
       }
   
-      return res.status(200).json(vehicleData.response);
+      return res.status(200).json(fartData.response);
     } catch (err) {
       console.error("Error farting vehicle:", err);
       return res.status(500).json({ error: "Internal server error" });
