@@ -12,6 +12,7 @@
     "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.10",
     "@mui/styled-engine-sc": "^6.1.10",
+    "cookie": "^1.0.2",
     "next": "latest",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,5 +20,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.16"
   }
 }

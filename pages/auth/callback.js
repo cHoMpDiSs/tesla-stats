@@ -6,7 +6,6 @@ import { Button } from "@mui/material";
 const AuthCallback = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [token, setToken] = useState("");
   const router = useRouter()
   useEffect(() => {
   
@@ -28,20 +27,22 @@ const AuthCallback = () => {
             throw new Error("Failed to retrieve token");
           }
           const data = await response.json();
-          setToken(data.access_token);
+          console.log(data)
+     
           setLoading(false);
         })
         .catch((err) => {
           console.error(err);
           setError("An error occurred while processing your request.");
           setLoading(false);
+          router.push("/auth")
         });
     } else {
-      router.push("/auth")
+    
       setLoading(false);
     }
-  }, [token]);
-
+  }, []);
+ 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">

@@ -1,12 +1,10 @@
-
-import { cookies } from 'next/headers';
+import { serialize } from 'cookie';
 
 export default async function handler(req, res) {
-  const { code, state } = req.body;
+  const { code } = req.body;
   const token = req.cookies.token;
-  if (token){
-    return res.status(200).json({success: "token already secured"})
-  }
+
+  console.log(code, "CODE FROM API")
   if (!code) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }
@@ -18,11 +16,11 @@ export default async function handler(req, res) {
   params.append('grant_type', 'authorization_code');
   params.append('client_id', TESLA_CLIENT_ID);
   params.append('client_secret', TESLA_CLIENT_SECRET);
-  params.append('redirect_uri',REDIRECT_URI ); // This must match the redirect URI in Tesla's app setup
+  params.append('redirect_uri', REDIRECT_URI); // This must match the redirect URI in Tesla's app setup
   params.append('code', code);
 
   try {
-    const response = await fetch(`${TESLA_OAUTH_URL}/token`, {
+    const response = await fetch(`${TESLA_OAUTH_URL}`, {
       method: 'POST',
       body: params,
       headers: {
@@ -31,12 +29,36 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-  
-    
+    console.log(data, "DATA IN API")
     if (response.ok) {
-      res.setHeader('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure=${process.env.NODE_ENV === 'production'}; SameSite=Strict`);;
-      return res.status(200).json({success: "Token Secured"}); 
+      const { access_token, refresh_token, expires_in } = data;
+
+      // Define cookie options
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+        path: '/',
+      };
+
+      // Set access token cookie
+      res.setHeader(
+        'Set-Cookie',
+        [
+          serialize('access_token', access_token, {
+            ...cookieOptions,
+            maxAge: expires_in, // Access token expiration
+          }),
+          serialize('refresh_token', refresh_token, {
+            ...cookieOptions,
+            maxAge: 30 * 24 * 60 * 60, // Example: 30 days for refresh token
+          }),
+        ]
+      );
+
+      return res.status(200).json({ success: 'Token Secured' });
     } else {
+      console.error('Token exchange failed:', data);
       return res.status(400).json({ error: data.error || 'Error exchanging code for token' });
     }
   } catch (error) {

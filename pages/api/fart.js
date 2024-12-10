@@ -1,20 +1,22 @@
+import { parse } from 'cookie'
+
 export default async function handler(req, res) {
     const { id } = req.query;
   
-    const token = req.cookies.token;
-    console.log("TOKEN", token , "--------")
-  
-    if (!token) {
-      return res.status(400).json({ error: "Failed to get token" });
+    const cookies = parse(req.headers.cookie || '');  
+    const accessToken = cookies.access_token;
+    const refreshToken = cookies.refresh_token;
+    if (!accessToken || !refreshToken) {
+      return res.status(400).json({ error: 'Missing access or refresh token' });
     }
-  
+
     try {
       const fartData = await fetch(
         `${process.env.TESLA_API_URL}/api/1/vehicles/${id}/command/remote_boombox`,
         {
           method: "POST", 
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json", 
           },
           body: JSON.stringify({
