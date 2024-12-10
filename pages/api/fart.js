@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   
     const cookies = parse(req.headers.cookie || '');  
     const accessToken = cookies.access_token;
+    console.log(accessToken, "ACCESS")
     const refreshToken = cookies.refresh_token;
     if (!accessToken || !refreshToken) {
       return res.status(400).json({ error: 'Missing access or refresh token' });
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
           }),
         }
       );
-      
+      console.log(fartData, "FART DATA")
       if (fartData.ok) {
         console.log("Fart noise triggered successfully!");
       } else {
