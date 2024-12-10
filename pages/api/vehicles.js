@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
 
   if (!token) {
-    return res.status(400).json({ error: "Failed to get token" });
+    return res.status(400).json({ error: "failed to get token" });
   }
 
     try {

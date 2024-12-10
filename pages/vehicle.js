@@ -44,7 +44,7 @@ const Vehicle = () => {
     setError(err.message || "Failed to make a stinky");
   }
  }
- async function wakeUp(){
+ const wakeUp = async () =>{
   try {
     const vehicleRes = await fetch(`/api/wakeUp?vin=${vin}`, {
       method: "POST",

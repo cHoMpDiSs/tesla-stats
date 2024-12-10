@@ -1,13 +1,7 @@
 export default async function handler(req, res) {
     const { vin } = req.query;
   
-    const parseCookies = (cookieHeader = "") =>
-      Object.fromEntries(
-        cookieHeader.split("; ").map((cookie) => cookie.split("="))
-      );
-  
-    const cookies = parseCookies(req.headers.cookie);
-    const token = cookies.token;
+    const token = req.cookies.token;
   
     if (!token) {
       return res.status(400).json({ error: "Failed to get token" });
