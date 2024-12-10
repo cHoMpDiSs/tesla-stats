@@ -3,20 +3,27 @@
 export default async function handler(req, res) {
     const sendToken = async () => {
         try {
-            const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken`);
-            const tokenData = await tokenRes.json();
+            // const tokenRes = await fetch(`${process.env.BASE_URL}/api/getToken`);
+            // const tokenData = await tokenRes.json();
 
-            if (!tokenRes.ok || !tokenData.access_token) {
-                throw new Error("Failed to get token");
-            }
-
+            // if (!tokenRes.ok || !tokenData.access_token) {
+            //     throw new Error("Failed to get token");
+            // }
+            
+            
             const accessToken = tokenData.access_token;
+            console.log(process.env.TESLA_API_TOKEN, "AUTH TOKENN")
             const domain = 'teslastats.dev';  
-            const apiUrl = `https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts?domain=${domain}`;
+            const apiUrl = `https://fleet-api.prd.na.vn.cloud.tesla.com/api/1/partner_accounts`;
+            const body = {
+                "domain": domain
+            }
+            
             const response = await fetch(apiUrl, {
                 method: 'POST',
+                body: JSON.stringify(body),
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${process.env.TESLA_AUTH_TOKEN}`,
                     'Content-Type': 'application/json',
                 },
           
