@@ -1,43 +1,36 @@
-
+import { parse } from 'cookie';
 
 export default async function handler(req, res) {
 
-  const token = req.cookies.token;
+  const cookies = parse(req.headers.cookie || '');  
 
 
-  if (!token) {
-    return res.status(400).json({ error: "failed to get token" });
+  const accessToken = cookies.access_token;
+  const refreshToken = cookies.refresh_token;
+
+
+  if (!accessToken || !refreshToken) {
+    return res.status(400).json({ error: 'Missing access or refresh token' });
   }
 
-    try {
- 
+  try {
+   
     const vehicleRes = await fetch(`${process.env.TESLA_API_URL}/api/1/vehicles`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
     });
 
     const vehicleData = await vehicleRes.json();
 
-    console.log(vehicleData)
-    // Parse vehicle response
-    // if (!vehicleRes.ok) {
-    //   return res.status(404).json({ error: "Failed to fetch vehicles" });
-    // }
-    if (vehicleData.error == 'token expired (401)'){
-      return(res.status(404).json({error:"token expired"}))
+    if (vehicleRes.ok) {
+      return res.status(200).json(vehicleData);
+    } else {
+      return res.status(400).json({ error: 'Error fetching vehicle data' });
     }
-
-    // Validate vehicle data
-    else if (!vehicleData.response || vehicleData.response.length === 0) {
-      return res.status(404).json({ error: "No vehicles found" });
-    }
-
- 
-    // Return car data
-    return res.status(200).json(vehicleData.response);
-
-  } catch (err) {
-    console.error("Error fetching vehicle data:", err);
-    return res.status(500).json({ error: "Internal server error" });
+  } catch (error) {
+    console.error('Error fetching vehicle data:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

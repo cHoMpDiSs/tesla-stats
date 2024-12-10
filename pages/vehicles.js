@@ -22,8 +22,9 @@ export default function VehicleData() {
         });
 
         const data = await vehicleRes.json();
+        console.log(data, "THIS IS THAT DATA")
         if (vehicleRes.ok) {
-          setVehicleData(data);
+          setVehicleData(data.response);
         } else {
           setError(data.error || "Failed to fetch vehicle data");
         }
@@ -35,12 +36,17 @@ export default function VehicleData() {
     fetchVehicleData();
   }, []);
 
-  console.log(vehicleData);
+  console.log(vehicleData, "VEHICLE DATA");
 
   if (error === "token expired" || error === "failed to get token") {
     router.push("/auth");
     return null;
-  } else if (vehicleData == null) {
+    
+  }
+  else if (error){
+    return <>{error}</>
+  }
+  else if (vehicleData == null) {
     return <p>Loading...</p>;
   }
 
@@ -98,12 +104,15 @@ export default function VehicleData() {
     router.push(`/vehicle?id=${id}&vin=${vin}`);
   };
 
+
+
+
   return vehicleData && (
     <div>
       <h1>Vehicle Data</h1>
       <ul>
         {vehicleData.map((vehicle) => (
-          <Card  key={vehicle.id} className="w-">
+          <Card  key={vehicle.id} className="w">
             <CardContent>
             <p><strong>Model:</strong> {vehicle.vin[3]}</p>
             <p><strong>ID:</strong> {vehicle.id}</p>
