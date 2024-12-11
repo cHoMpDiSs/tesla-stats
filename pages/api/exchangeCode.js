@@ -2,9 +2,7 @@ import { serialize } from 'cookie';
 
 export default async function handler(req, res) {
   const { code } = req.body;
-  const token = req.cookies.token;
 
-  console.log(code, "CODE FROM API")
   if (!code) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }
