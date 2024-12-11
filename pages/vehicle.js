@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
+import { Battery20Rounded } from '@mui/icons-material';
+import BatteryStatus from '../components/BatteryLevel';
 
 const Vehicle = () => {
   const router = useRouter();
@@ -86,21 +88,61 @@ console.log(vin)
     'vehicle_data_combo',
   ];
 
+  //CHARGE STATE
+  //battery_level
+  //battery_range
+
+
+  // CLIMATE STATE
+  //inside_temp
+
+  // DRIVE STATE
+  //speed
+
+  //VEHICLE STATE
+  //locked
+  //odometer
+  //  "tpms_pressure_fl": 2.7,
+  //"tpms_pressure_fr": 2.725,
+  //"tpms_pressure_rl": 2.725,
+  //"tpms_pressure_rr": 2.725,
+  
+  
   return (
     <div>
-      <h1>Vehicle Details</h1>
-      <Button onClick={() => {makeStinky()}} variant="contained">
-       Fart</Button>
-      {detailsToShow.map((field) => (
-        vehicleData[field] ? (
-          <div key={field}>
-            <h3>{field.replace(/_/g, ' ').toUpperCase()}</h3>
-            <pre>{JSON.stringify(vehicleData[field], null, 2)}</pre>
-          </div>
-        ) : null
-      ))}
+      <p className=' text-4xl'>Vehicle Details</p>
+      <Button onClick={() => makeStinky()} variant="contained">
+        Fart
+      </Button>
+      <BatteryStatus
+      batteryLevel={vehicleData.charge_state?.battery_level}
+      />
+    {vehicleData.charge_state?.battery_level + "%"}
+      <div>
+        <h3>CHARGE STATE</h3>
+        <p>Battery Level: {vehicleData.charge_state?.battery_level}</p>
+        <p>Battery Range: {vehicleData.charge_state?.battery_range}</p>
+      </div>
+      <div>
+        <h3>CLIMATE STATE</h3>
+        <p>Inside Temp: {vehicleData.climate_state?.inside_temp}</p>
+      </div>
+      <div>
+        <h3>DRIVE STATE</h3>
+        <p>Speed: {vehicleData.drive_state?.speed == null && "Parked"}</p>
+      </div>
+      <div>
+        <h3>VEHICLE STATE</h3>
+        <p>Locked: {vehicleData.vehicle_state?.locked ? 'Yes' : 'No'}</p>
+        <p>Odometer: {parseInt(vehicleData.vehicle_state?.odometer)}</p>
+        <p>TPMS Pressure (Front Left): {vehicleData.vehicle_state?.tpms_pressure_fl}</p>
+        <p>TPMS Pressure (Front Right): {vehicleData.vehicle_state?.tpms_pressure_fr}</p>
+        <p>TPMS Pressure (Rear Left): {vehicleData.vehicle_state?.tpms_pressure_rl}</p>
+        <p>TPMS Pressure (Rear Right): {vehicleData.vehicle_state?.tpms_pressure_rr}</p>
+      </div>
     </div>
   );
+  
 };
 
 Vehicle.propTypes = {};
