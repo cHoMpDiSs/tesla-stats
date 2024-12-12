@@ -19,7 +19,7 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <AppBar position="static" className="bg-black">
+    <AppBar position="static" className="bg-slate-600">
       <Toolbar>
         {/* Logo or Title */}
         <Typography variant="h6" sx={{ flexGrow: 1 }}>

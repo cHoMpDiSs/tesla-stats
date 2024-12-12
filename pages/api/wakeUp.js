@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       if (!wakeData || !wakeData.response) {
         return res.status(500).json({ error: "Invalid vehicle wake data response" });
       }
-  
+      
       return res.status(200).json(wakeData.response);
     } catch (err) {
       console.error("Error waking vehicle:", err);
