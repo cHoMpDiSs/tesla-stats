@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@mui/material';
-import { Battery20Rounded } from '@mui/icons-material';
 import BatteryStatus from '../components/BatteryLevel';
 
 const Vehicle = () => {
@@ -25,6 +24,7 @@ const Vehicle = () => {
       } catch (err) {
         setError(err.message);
       }
+
     };
 
     fetchVehicleData();
