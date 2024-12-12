@@ -8,6 +8,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Image from "next/image";
 import modelY from "../public/images/y.png";
+import Navbar from "../components/NavBar";
 export default function Home() {
   const router = useRouter();
 
@@ -16,14 +17,15 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Telsa Stats</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Navbar/>
       <main>
-        <h1 className="font-thin font-2xl">Tesla Stats</h1>
+      
+        <p className="font-sans text-8xl">Tesla Stats</p>
 
         <div className={styles.grid}>
           <div className={styles.card}>

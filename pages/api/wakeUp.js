@@ -1,7 +1,12 @@
+import { parse } from 'cookie';
 export default async function handler(req, res) {
     const { vin } = req.query;
   
-    const token = req.cookies.token;
+    const cookies = parse(req.headers.cookie || '');  
+
+
+  const token = cookies.access_token;
+
   
     if (!token) {
       return res.status(400).json({ error: "Failed to get token" });
