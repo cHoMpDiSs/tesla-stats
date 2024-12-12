@@ -23,7 +23,6 @@ export default function VehicleData() {
         });
 
         const data = await vehicleRes.json();
-        console.log(data, "THIS IS THAT DATA");
         if (vehicleRes.ok) {
           setVehicleData(data.response);
         } else {
@@ -37,8 +36,6 @@ export default function VehicleData() {
     fetchVehicleData();
   }, []);
 
-  console.log(vehicleData, "VEHICLE DATA");
-
   if (
     error === "token expired" ||
     error === "failed to get token" ||
@@ -47,13 +44,21 @@ export default function VehicleData() {
     router.push("/auth");
     return null;
   } else if (error) {
-    return <>{error}</>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-red-50">
+        <p className="text-red-500 text-lg font-semibold">{error}</p>
+      </div>
+    );
   } else if (vehicleData == null) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <CircularProgress size={60} color="primary" />
+      </div>
+    );
   }
 
   async function wakeUpAndPoll(vin) {
-    setPolling(true); // Start polling
+    setPolling(true);
     try {
       const wakeUpRes = await fetch(`/api/wakeUp?vin=${vin}`, {
         method: "POST",
@@ -65,13 +70,12 @@ export default function VehicleData() {
       if (!wakeUpRes.ok) {
         const data = await wakeUpRes.json();
         setError(data.error || "Failed to wake vehicle");
-        setPolling(false); // End polling
+        setPolling(false);
         return;
       }
 
       let maxAttempts = 10;
       let attempt = 0;
-      let updatedVehicleData = null;
 
       while (attempt < maxAttempts) {
         const vehicleRes = await fetch("/api/vehicles", {
@@ -83,11 +87,13 @@ export default function VehicleData() {
 
         const data = await vehicleRes.json();
 
-        if (vehicleRes.ok && data!== null) {
-          updatedVehicleData = data.find((vehicle) => vehicle.vin === vin);
+        if (vehicleRes.ok) {
+          const updatedVehicleData = data.response.find(
+            (vehicle) => vehicle.vin === vin
+          );
           if (updatedVehicleData && updatedVehicleData.state === "online") {
-            setVehicleData(data);
-            setPolling(false); // End polling
+            setVehicleData(data.response);
+            setPolling(false);
             return;
           }
         }
@@ -100,71 +106,85 @@ export default function VehicleData() {
     } catch (err) {
       setError(err.message || "Failed to wake vehicle");
     } finally {
-      setPolling(false); // Ensure polling ends in all cases
+      setPolling(false);
     }
   }
 
   const goToVehiclePage = (id, vin) => {
-    console.log(id, vin);
     router.push(`/vehicle?id=${id}&vin=${vin}`);
   };
 
   return (
-    vehicleData && (
-      <div className="mx-4">
-        <p className="text-3xl">Vehicle Data</p>
-        <ul>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 ">
+      <h1 className="text-4xl  text-center mb-8 text-gray-800">Fleet</h1>
+      <div className="flex flex-col items-center">
+        <div
+          className={`grid gap-6 ${
+            vehicleData.length === 1
+              ? "grid-cols-1"
+              : vehicleData.length === 2
+              ? "grid-cols-2"
+              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          }`}
+        >
           {vehicleData.map((vehicle) => (
-            <Card key={vehicle.id} className="w-1/2 p-4 mx-auto ">
-              <CardContent>
-                <p>
+            <Card
+              key={vehicle.id}
+              className="shadow-lg rounded-lg hover:shadow-2xl transition-all duration-300 "
+            >
+              <CardContent className="p-4">
+                <p className="text-lg mb-2">
                   <strong>Model:</strong> {vehicle.vin[3]}
                 </p>
-                <p>
+                <p className="text-sm mb-1">
                   <strong>ID:</strong> {vehicle.id}
                 </p>
-                <p>
+                <p className="text-sm mb-1">
                   <strong>VIN:</strong> {vehicle.vin}
                 </p>
-                <p>
-                  <strong>Color:</strong> {vehicle.color}
+                <p className="text-sm mb-1">
+                  <strong>Color:</strong> {vehicle.color || "Midnight Silver"}
                 </p>
-                <p>
-                  <strong>State:</strong> {vehicle.state}
+                <p className="text-sm mb-1">
+                  <strong>State:</strong>{" "}
+                  <span
+                    className={`${
+                      vehicle.state === "online"
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {vehicle.state}
+                  </span>
                 </p>
               </CardContent>
-              {vehicle.state === "offline" || vehicle.state === "asleep" ? (
-                polling ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                    }}
-                  >
+              <div className="p-4 flex justify-center">
+                {vehicle.state === "offline" || vehicle.state === "asleep" ? (
+                  polling ? (
                     <CircularProgress size={40} color="primary" />
-                  </div>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={() => wakeUpAndPoll(vehicle.vin)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Wake Up
+                    </Button>
+                  )
                 ) : (
                   <Button
                     variant="contained"
-                    onClick={() => wakeUpAndPoll(vehicle.vin)}
+                    onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
+                    className="bg-green-600 hover:bg-green-700 text-white"
                   >
-                    Wake Up
+                    {vehicle.display_name} Data
                   </Button>
-                )
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
-                >
-                  {vehicle.display_name} Data
-                </Button>
-              )}
+                )}
+              </div>
             </Card>
           ))}
-        </ul>
+        </div>
       </div>
-    )
+    </div>
   );
 }
