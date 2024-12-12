@@ -10,12 +10,12 @@ export default async function handler(req, res) {
             const body = {
                 "domain": domain
             }
-            const token = ""
+          
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 body: JSON.stringify(body),
                 headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+                    Authorization: `Bearer ${process.env.TESLA_PARTNER_TOKEN}`,
                     'Content-Type': 'application/json',
                 },
           
