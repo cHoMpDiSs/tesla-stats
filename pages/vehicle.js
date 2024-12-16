@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
 import BatteryStatus from "../components/BatteryLevel";
-
+import TirePressure from "../components/TirePressure";
+import Climate from "../components/Climate";
+import DriveState from "../components/DriveState";
+import CircularProgress from "@mui/material";
 const Vehicle = () => {
   const router = useRouter();
   const { id, vin } = router.query;
-
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
   const [loadingWakeUp, setLoadingWakeUp] = useState(false);
@@ -48,31 +50,58 @@ const Vehicle = () => {
     }
   };
 
-  const wakeUp = async () => {
+  async function wakeUpAndPoll() {
     setLoadingWakeUp(true);
-    setWakeUpSuccess(null);
-    setError(null);
-
     try {
-      const vehicleRes = await fetch(`/api/wakeUp?vin=${vin}`, {
+      const wakeUpRes = await fetch(`/api/wakeUp?vin=${vin}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      const data = await vehicleRes.json();
-      if (vehicleRes.ok) {
-        setWakeUpSuccess("Vehicle is now awake!");
-      } else {
+      if (!wakeUpRes.ok) {
+        const data = await wakeUpRes.json();
         setError(data.error || "Failed to wake vehicle");
+        setLoadingWakeUp(false);
+        return;
       }
+
+      let maxAttempts = 5;
+      let attempt = 0;
+
+      while (attempt < maxAttempts) {
+        const vehicleRes = await fetch("/api/vehicles", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await vehicleRes.json();
+
+        if (vehicleRes.ok) {
+          const updatedVehicleData = data.response.find(
+            (vehicle) => vehicle.vin === vin
+          );
+          if (updatedVehicleData && updatedVehicleData.state === "online") {
+            setVehicleData(data.response);
+            setLoadingWakeUp(false);
+            return;
+          }
+        }
+
+        attempt++;
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+
+      setError("Vehicle did not wake up within the expected time frame.");
     } catch (err) {
       setError(err.message || "Failed to wake vehicle");
     } finally {
       setLoadingWakeUp(false);
     }
-  };
+  }
 
   if (error === "Vehicle offline or asleep") {
     return (
@@ -82,13 +111,17 @@ const Vehicle = () => {
         </h1>
         <Button
           variant="contained"
-          onClick={wakeUp}
+          onClick={wakeUpAndPoll}
           disabled={loadingWakeUp}
           className={`${
             loadingWakeUp ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
           }`}
         >
-          {loadingWakeUp ? "Waking Up..." : "Wake Up"}
+          {loadingWakeUp ? (
+            <CircularProgress size={40} color="primary" />
+          ) : (
+            "Wake Up"
+          )}
         </Button>
         {wakeUpSuccess && (
           <p className="mt-4 text-green-600">{wakeUpSuccess}</p>
@@ -100,49 +133,68 @@ const Vehicle = () => {
     );
   }
 
-  if (!vehicleData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-          <p className="mt-4 text-gray-600 text-lg">Loading vehicle data...</p>
-        </div>
-      </div>
-    );
-  }
-  
+  // if (!vehicleData) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+  //       <div className="flex flex-col items-center">
+  //         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+  //         <p className="mt-4 text-gray-600 text-lg">Loading vehicle data...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <h1 className="text-4xl text-center mb-8 text-gray-800">
+      <h1 className="text-4xl text-center mb-8 font-poppins text-gray-800">
         Model {vin?.[3]} Details
       </h1>
-
-      <BatteryStatus
-        batteryLevel={vehicleData.charge_state?.battery_level}
-        batteryRange={vehicleData.charge_state?.battery_range}
-      />
-      <Button onClick={() => makeStinky()} variant="contained">
+      {/* <Button onClick={() => makeStinky()} variant="contained">
         Fart
-      </Button>
+      </Button> */}
+      <div className="mt-1 grid grid-cols-1 gap-[0.625rem] md:grid-cols-2 md:gap-x-3">
+        <div>
+          <BatteryStatus
+            batteryLevel={vehicleData?.charge_state.battery_level}
+            batteryRange={vehicleData?.charge_state.battery_range}
+          />
+        </div>
 
+        <div>
+          <TirePressure
+            rl={vehicleData?.vehicle_state.tpms_pressure_rl}
+            fl={vehicleData?.vehicle_state.tpms_pressure_fl}
+            rr={vehicleData?.vehicle_state.tpms_pressure_rr}
+            fr={vehicleData?.vehicle_state.tpms_pressure_fr}
+          />
+        </div>
+      </div>
+      <div className="mt-1 grid grid-cols-1 gap-[0.625rem] md:grid-cols-2 md:gap-x-3">
       <div>
-        <h3>CLIMATE STATE</h3>
-        <p>Inside Temp: {vehicleData.climate_state?.inside_temp}</p>
+        <Climate
+          is_climate_on={vehicleData?.climate_state.is_climate_on}
+          outside_temp={vehicleData?.climate_state.outside_temp}
+          inside_temp={vehicleData?.climate_state.inside_temp}
+          cabin_overheat_protection={
+            vehicleData?.climate_state.cabin_overheat_protection
+          }
+        />
       </div>
       <div>
-        <h3>DRIVE STATE</h3>
-        <p>Speed: {vehicleData.drive_state?.speed == null && "Parked"}</p>
+        <DriveState
+          drive_state={vehicleData?.drive_state.speed}
+          locked={vehicleData?.vehicle_state.locked}
+          odometer={vehicleData?.vehicle_state.odometer}
+        />
+        {/* <h3>DRIVE STATE</h3>
+        <p>Speed: {vehicleData.drive_state?.speed == null && "Parked"}</p> */}
       </div>
-      <div>
+      </div>
+      {/* <div>
         <h3>VEHICLE STATE</h3>
         <p>Locked: {vehicleData.vehicle_state?.locked ? "Yes" : "No"}</p>
         <p>Odometer: {parseInt(vehicleData.vehicle_state?.odometer)}</p>
-        <p>TPMS Pressure (Front Left): {vehicleData.vehicle_state?.tpms_pressure_fl}</p>
-        <p>TPMS Pressure (Front Right): {vehicleData.vehicle_state?.tpms_pressure_fr}</p>
-        <p>TPMS Pressure (Rear Left): {vehicleData.vehicle_state?.tpms_pressure_rl}</p>
-        <p>TPMS Pressure (Rear Right): {vehicleData.vehicle_state?.tpms_pressure_rr}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

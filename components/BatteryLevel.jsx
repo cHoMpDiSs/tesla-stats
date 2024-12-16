@@ -1,5 +1,5 @@
 import { Battery20Rounded, Battery50Rounded, Battery80Rounded, Battery90Rounded, BatteryFullRounded } from '@mui/icons-material';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent} from '@mui/material';
 
 const BatteryStatus = ({ batteryLevel,batteryRange }) => {
   const getBatteryIcon = () => {
@@ -18,7 +18,8 @@ const BatteryStatus = ({ batteryLevel,batteryRange }) => {
   };
 
   return (
-    <Card className="w-1/3 mx-auto shadow-lg rounded-lg">
+    <Card className="mx-auto shadow-lg rounded-lg min-h-72">
+      <p className='text-center font-futura text-2xl'>Battery Health</p>
       <CardContent className="flex flex-col items-center">
         {getBatteryIcon()}
         <p className="text-xl font-bold">{batteryLevel}%</p>
