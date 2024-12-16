@@ -2,7 +2,7 @@
 
 export default async function handler(req, res) {
     const sendToken = async () => {
-        console.log(process.env.NEXT_PUBLIC_API_KEY)
+      
         try {
     
             const domain = 'teslastats.dev';  

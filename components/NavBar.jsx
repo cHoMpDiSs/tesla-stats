@@ -19,11 +19,11 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <AppBar position="static" className="bg-slate-600">
+    <AppBar position="static" className="bg-slate-800 font-futura">
       <Toolbar>
         {/* Logo or Title */}
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Tesla Dashboard
+        <Typography variant="h5" sx={{ flexGrow: 1 }}>
+          Tesla Stats
         </Typography>
 
         {/* Hamburger Icon for Mobile */}
@@ -38,7 +38,7 @@ const Navbar = () => {
         </IconButton>
 
         {/* Drawer Menu for Mobile */}
-        <Drawer anchor="right" open={menuOpen} onClose={toggleMenu}>
+        <Drawer className="opacity-80" anchor="right" open={menuOpen} onClose={toggleMenu}>
           <List>
             <ListItem button>
               <Link href="/" passHref>
@@ -55,33 +55,23 @@ const Navbar = () => {
                 <Typography color="inherit">Profile</Typography>
               </Link>
             </ListItem>
-            <ListItem button>
-              <Link href="/logout" passHref>
-                <Typography color="inherit">Logout</Typography>
-              </Link>
-            </ListItem>
           </List>
         </Drawer>
 
         <div className="hidden sm:block">
           <Button color="inherit">
             <Link href="/" passHref>
-              <Typography>Home</Typography>
+              <Typography className="font-thin">Home</Typography>
             </Link>
           </Button>
           <Button color="inherit">
             <Link href="/vehicles" passHref>
-              <Typography>Vehicles</Typography>
+              <Typography className="font-thin">Vehicles</Typography>
             </Link>
           </Button>
           <Button color="inherit">
             <Link href="/profile" passHref>
-              <Typography>Profile</Typography>
-            </Link>
-          </Button>
-          <Button color="inherit">
-            <Link href="/logout" passHref>
-              <Typography>Logout</Typography>
+              <Typography className="font-thin">Profile</Typography>
             </Link>
           </Button>
         </div>

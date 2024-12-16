@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    console.log(data, "DATA IN API")
+
     if (response.ok) {
       const { access_token, refresh_token, expires_in } = data;
 

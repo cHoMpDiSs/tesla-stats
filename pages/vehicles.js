@@ -74,7 +74,7 @@ export default function VehicleData() {
         return;
       }
 
-      let maxAttempts = 10;
+      let maxAttempts = 5;
       let attempt = 0;
 
       while (attempt < maxAttempts) {
