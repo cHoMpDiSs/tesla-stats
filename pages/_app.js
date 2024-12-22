@@ -1,8 +1,6 @@
-import React from 'react';
-import '../styles/globals.css'
+import DashboardProvider from "../components/DashboardProvider";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+export default function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((page) => <DashboardProvider>{page}</DashboardProvider>);
+  return getLayout(<Component {...pageProps} />);
 }
-
-export default MyApp;
