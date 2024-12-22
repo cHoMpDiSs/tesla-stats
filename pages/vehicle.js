@@ -102,10 +102,10 @@ const Vehicle = () => {
       setLoadingWakeUp(false);
     }
   }
-
+console.log(vehicleData)
   if (error === "Vehicle offline or asleep") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-6">
+      <div className="flex flex-col items-center justify-center min-h-screen  py-6">
         <h1 className="text-xl font-bold text-red-700 mb-4">
           Vehicle is offline or asleep
         </h1>
@@ -114,7 +114,7 @@ const Vehicle = () => {
           onClick={wakeUpAndPoll}
           disabled={loadingWakeUp}
           className={`${
-            loadingWakeUp ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
+            loadingWakeUp ? "cursor-not-allowed" : "bg-blue-500"
           }`}
         >
           {loadingWakeUp ? (
@@ -145,8 +145,8 @@ const Vehicle = () => {
   // }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <h1 className="text-4xl text-center mb-8 font-poppins text-gray-800">
+    <div className="min-h-screen  py-8 px-4">
+      <h1 className="text-4xl text-center mb-8 font-poppins ">
         Model {vin?.[3]} Details
       </h1>
       {/* <Button onClick={() => makeStinky()} variant="contained">
@@ -156,7 +156,9 @@ const Vehicle = () => {
         <div>
           <BatteryStatus
             batteryLevel={vehicleData?.charge_state.battery_level}
-            batteryRange={vehicleData?.charge_state.battery_range}
+            chargeLimit={vehicleData?.charge_state.charge_limit_soc_std}
+            currentRange={vehicleData?.charge_state.battery_range}
+            idealRange={vehicleData?.charge_state.ideal_battery_range}
           />
         </div>
 

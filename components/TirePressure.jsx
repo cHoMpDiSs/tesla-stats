@@ -5,8 +5,8 @@ const TirePressure = ({ rl, rr, fl, fr }) => {
   console.log({ rl, rr, fl, fr });
 
   return (
-    <Card className="mx-auto shadow-lg rounded-lg">
-      <BarChart
+    <Card className="mx-auto shadow-lg rounded-lg ">
+      <BarChart className="mt-3"
         series={[
           {
             data: [fr, fl, rr, rl],

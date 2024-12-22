@@ -7,6 +7,8 @@ import { extendTheme, styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import { BatteryFullRounded } from "@mui/icons-material";
+import { modelY } from "../public/images/y.png";
 
 const NAVIGATION = [
   {
@@ -41,17 +43,6 @@ const Skeleton = styled("div")(({ theme, height }) => ({
   content: '" "',
 }));
 
-function useDemoRouter(initialPath) {
-  const [pathname, setPathname] = React.useState(initialPath);
-  const router = React.useMemo(() => ({
-    pathname,
-    searchParams: new URLSearchParams(),
-    navigate: (path) => setPathname(String(path)),
-  }), [pathname]);
-
-  return router;
-}
-
 export default function DashboardProvider(props) {
   const { window } = props;
   const router = useRouter();
@@ -59,25 +50,30 @@ export default function DashboardProvider(props) {
   const customRouter = {
     pathname: router.pathname,
     searchParams: new URLSearchParams(),
-    navigate: (path) => router.push(path), 
+    navigate: (path) => router.push(path),
   };
 
   return (
     <AppProvider
-    branding={{
-      title: (
-        <Typography variant="h6" className="!font-bold font-sans">
-          Tesla Stats
-        </Typography>
-      ),
-      logo: <img src="/logo.png" alt="logo" />,
-    }}
+      branding={{
+        title: (
+       
+          
+             "Tesla Stats"
+          
+        
+        ),
+
+        logo: <BatteryFullRounded className="mt-2 " />,
+      }}
       navigation={NAVIGATION}
       router={customRouter}
       theme={demoTheme}
       window={window}
     >
-      <DashboardLayout>{props.children}</DashboardLayout>
+      <DashboardLayout 
+      
+      >{props.children}</DashboardLayout>
     </AppProvider>
   );
 }

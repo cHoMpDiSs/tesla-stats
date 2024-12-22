@@ -115,8 +115,8 @@ export default function VehicleData() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 ">
-      <h1 className="text-4xl  text-center mb-8 text-gray-800">Fleet</h1>
+    <div className="min-h-screen  py-8 px-4 ">
+      <h1 className="text-4xl  text-center mb-8 ">Fleet</h1>
       <div className="flex flex-col items-center">
         <div
           className={`grid gap-6 ${
