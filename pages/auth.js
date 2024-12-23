@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@mui/material/Button";
-
+import { Card } from "@mui/material";
 const TeslaAuth = () => {
   // Function to generate a random state for security purposes
   const generateState = () => {
@@ -28,9 +28,9 @@ const TeslaAuth = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+    <div className="flex flex-col items-center justify-center mt-36 ">
+      <Card className=" shadow-lg rounded-lg p-8 w-full max-w-md ">
+        <h1 className="text-2xl font-bold text-center mb-6 ">
           Login with Tesla
         </h1>
         <Button
@@ -40,7 +40,7 @@ const TeslaAuth = () => {
         >
           Authorize with Tesla
         </Button>
-      </div>
+      </Card>
     </div>
   );
 };
