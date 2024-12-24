@@ -18,7 +18,7 @@ export default function Home() {
           Tesla Stats
         </p>
         <Image  src={cyber} alt="Cyber Truck" className="rounded-lg shadow-lg w-[45rem] xl:mt-4 lg:mt-2" />
-        <div className="mt-1 grid grid-cols-1 gap-[0.625rem] md:grid-cols-2 md:gap-x-3">
+        <div className="mt-1 grid lg:grid-cols-1 xl:grid-cols-2 gap-[0.625rem] md:grid-cols-1 md:gap-x-3 ">
           <BatteryStatus
           batteryLevel={20}
           chargeLimit={80}
