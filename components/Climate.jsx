@@ -24,7 +24,7 @@ const Climate = ({
 
     <CardContent className="e">
       <Typography variant="body1" className="mb-2">
-        <strong>Is Climate On:</strong> {is_climate_on ? "Yes" : "No"}
+        <strong>Climate On:</strong> {is_climate_on ? "Yes" : "No"}
       </Typography>
       <Typography variant="body1" className="mb-2">
         <strong>Outside Temperature:</strong> {toFahrenheit(outside_temp).toFixed(2)}°F

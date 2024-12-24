@@ -36,8 +36,35 @@ export default function VehicleData() {
     fetchVehicleData();
   }, []);
 
-  if (
-    error === "token expired" ||
+  useEffect(() => {
+    if (error === "token expired") {
+      async function refreshToken() {
+        try {
+          const response = await fetch("/api/getToken", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            console.log("Refresh token successful");
+          } else {
+            console.error(data.error || "Failed to refresh token");
+          }
+        } catch (err) {
+          console.error("Error refreshing token:", err);
+        }
+      }
+
+      refreshToken();
+    }
+  }, [error]); // Dependency array: triggers when `error` changes
+
+
+ if (
     error === "failed to get token" ||
     error === "Missing access or refresh token"
   ) {
