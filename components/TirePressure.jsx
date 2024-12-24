@@ -1,15 +1,19 @@
 import React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { Card } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 const TirePressure = ({ rl, rr, fl, fr }) => {
   console.log({ rl, rr, fl, fr });
 
   return (
-    <Card className="mx-auto shadow-lg rounded-lg ">
-      <p className="mt-2 relative font-futura text-center">Tire Pressure</p>
+    <Card className="mx-auto shadow-lg rounded-lg min-h-72 w-96 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+      <Typography
+        variant="h6"
+        className="text-center text-2xl font-bold mt-4 "
+      >
+        Tire Pressure
+      </Typography>
       <BarChart
-  
-        className="mt-2"
+        className=""
         series={[
           {
             data: [
@@ -23,7 +27,7 @@ const TirePressure = ({ rl, rr, fl, fr }) => {
           },
         ]}
         borderRadius={33}
-        height={290}
+        height={238}
         barLabel={"value"}
         xAxis={[
           {

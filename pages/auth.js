@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { Card } from "@mui/material";
+
 const TeslaAuth = () => {
   // Function to generate a random state for security purposes
   const generateState = () => {

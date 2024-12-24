@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Box, Typography } from "@mui/material";
 
 export default function VehicleData() {
   const [vehicleData, setVehicleData] = useState(null);
@@ -128,60 +128,59 @@ export default function VehicleData() {
           }`}
         >
           {vehicleData.map((vehicle) => (
-            <Card
-              key={vehicle.id}
-              className="shadow-lg rounded-lg hover:shadow-2xl transition-all duration-300 "
-            >
-              <CardContent className="p-4">
-                <p className="text-lg mb-2">
-                  <strong>Model:</strong> {vehicle.vin[3]}
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>ID:</strong> {vehicle.id}
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>VIN:</strong> {vehicle.vin}
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>Color:</strong> {vehicle.color || "Midnight Silver"}
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>State:</strong>{" "}
-                  <span
-                    className={`${
-                      vehicle.state === "online"
-                        ? "text-green-600"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {vehicle.state}
-                  </span>
-                </p>
-              </CardContent>
-              <div className="p-4 flex justify-center">
-                {vehicle.state === "offline" || vehicle.state === "asleep" ? (
-                  polling ? (
-                    <CircularProgress size={40} color="primary" />
-                  ) : (
-                    <Button
-                      variant="contained"
-                      onClick={() => wakeUpAndPoll(vehicle.vin)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      Wake Up
-                    </Button>
-                  )
-                ) : (
-                  <Button
-                    variant="contained"
-                    onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
-                    className="bg-green-600 hover:bg-green-700 text-white"
-                  >
-                    {vehicle.display_name} Data
-                  </Button>
-                )}
-              </div>
-            </Card>
+  <Card
+  key={vehicle.id}
+  className="shadow-lg rounded-lg  hover:shadow-2xl transition-all duration-300 border border-gray-200"
+>
+  <CardContent className="p-6">
+    <Box className="mb-4">
+      <Typography variant="h6" className="font-bold ">
+        Model: {vehicle.vin[3]}
+      </Typography>
+      <Typography variant="body2" className="">
+        <strong>ID:</strong> {vehicle.id}
+      </Typography>
+      <Typography variant="body2" className="">
+        <strong>VIN:</strong> {vehicle.vin}
+      </Typography>
+      <Typography variant="body2" className="">
+        <strong>Color:</strong> {vehicle.color || "Midnight Silver"}
+      </Typography>
+      <Typography
+        variant="body2"
+        className={`font-medium ${
+          vehicle.state === "online" ? "text-green-600" : "text-red-500"
+        }`}
+      >
+        <strong>State:</strong> {vehicle.state}
+      </Typography>
+    </Box>
+  </CardContent>
+  <Box className="p-4 flex justify-center">
+    {vehicle.state === "offline" || vehicle.state === "asleep" ? (
+      polling ? (
+        <CircularProgress size={40} color="primary" />
+      ) : (
+        <Button
+          variant="contained"
+          onClick={() => wakeUpAndPoll(vehicle.vin)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+        >
+          Wake Up
+        </Button>
+      )
+    ) : (
+      <Button
+        variant="contained"
+        onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
+        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+      >
+        View {vehicle.display_name} Data
+      </Button>
+    )}
+  </Box>
+</Card>
+
           ))}
         </div>
       </div>

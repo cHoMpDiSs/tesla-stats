@@ -75,7 +75,7 @@ const AuthCallback = () => {
       <p className="text-gray-600 mt-2">
         Your Tesla account has been successfully linked.
       </p>
-      <Button
+      {/* <Button
       variant="contained"
         onClick={() =>{redirectTo('account')}}
       >
@@ -86,7 +86,7 @@ const AuthCallback = () => {
          onClick={() =>{redirectTo('vehicles')}}
       >
        Vehicles
-      </Button>
+      </Button> */}
     </div>
   );
 };
