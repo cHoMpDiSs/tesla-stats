@@ -12,12 +12,13 @@ const Vehicle = () => {
   const [vehicleData, setVehicleData] = useState(null);
   const [error, setError] = useState(null);
   const [loadingWakeUp, setLoadingWakeUp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [wakeUpSuccess, setWakeUpSuccess] = useState(null);
 
   useEffect(() => {
     if (!id) return;
-
     const fetchVehicleData = async () => {
+      setLoading(true)
       try {
         const res = await fetch(`/api/vehicleData?id=${id}`);
         const data = await res.json();
@@ -25,6 +26,7 @@ const Vehicle = () => {
           setError(data.error);
         }
         setVehicleData(data);
+        setLoading(false)
       } catch (err) {
         setError(err.message);
       }
@@ -133,19 +135,19 @@ console.log(vehicleData)
     );
   }
 
-  // if (!vehicleData) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-  //       <div className="flex flex-col items-center">
-  //         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
-  //         <p className="mt-4 text-gray-600 text-lg">Loading vehicle data...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  return (
-    <div className="min-h-screen  py-8 px-4">
+  if (!vehicleData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen ">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin"></div>
+          <p className="mt-4 text-gray-600 text-lg">Loading vehicle data...</p>
+        </div>
+      </div>
+    );
+  }
+else if (vehicleData)
+  return  (
+    <div className=" mb-24 py-8 px-4">
       <h1 className="text-4xl text-center mb-8 font-poppins ">
         Model {vin?.[3]} Details
       </h1>
@@ -188,15 +190,8 @@ console.log(vehicleData)
           locked={vehicleData?.vehicle_state.locked}
           odometer={vehicleData?.vehicle_state.odometer}
         />
-        {/* <h3>DRIVE STATE</h3>
-        <p>Speed: {vehicleData.drive_state?.speed == null && "Parked"}</p> */}
       </div>
       </div>
-      {/* <div>
-        <h3>VEHICLE STATE</h3>
-        <p>Locked: {vehicleData.vehicle_state?.locked ? "Yes" : "No"}</p>
-        <p>Odometer: {parseInt(vehicleData.vehicle_state?.odometer)}</p>
-      </div> */}
     </div>
   );
 };

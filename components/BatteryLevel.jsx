@@ -5,7 +5,7 @@ import {
   Battery90Rounded,
   BatteryFullRounded,
 } from "@mui/icons-material";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 const BatteryStatus = ({
   batteryLevel,
@@ -38,23 +38,41 @@ const BatteryStatus = ({
   const degradation = calculateBatteryDegradation(currentRange, idealRange);
 
   return (
-    <Card className="mx-auto shadow-lg rounded-lg min-h-72 w-96">
-      <p className="text-center font-futura  mt-2">Battery Health</p>
-      <CardContent>
-        <div className="flex items-center space-x-4">
-          <div className="flex flex-col items-center">
-            <div className="-rotate-90">{getBatteryIcon()} </div>
-            <p className="text-xl">{batteryLevel}%</p>{" "}
-          </div>
-          <div className="flex flex-col items-start">
-            <p className="text-xl">{currentRange} Current Range</p>
-            <p className="text-xl">{idealRange} Ideal Range</p>
-            <p className="text-xl">Charge Limit: {chargeLimit}%</p>
-            <p className="text-xl">Degradation: {degradation}%</p>
-          </div>
+    <Card className="mx-auto shadow-lg rounded-lg min-h-72 w-96 border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+    <Typography
+      variant="h6"
+      className="text-center text-2xl font-bold mt-4 "
+    >
+     Battery Health
+    </Typography>
+    <CardContent>
+      <div className="flex items-center space-x-6">
+        {/* Battery Icon and Level */}
+        <div className="flex flex-col items-center">
+          <div className="-rotate-90">{getBatteryIcon()}</div>
+          <Typography
+            variant="h5"
+            className=" font-semibold mt-2"
+          >
+            {batteryLevel}%
+          </Typography>
         </div>
-      </CardContent>
-    </Card>
+        {/* Battery Details */}
+        <div className="flex flex-col items-start space-y-2">
+          <Typography variant="body1" className="">
+            <strong>Current Range:</strong> {currentRange} miles
+          </Typography>
+          <Typography variant="body1" className="">
+            <strong>Ideal Range:</strong> {idealRange} miles
+          </Typography>
+          <Typography variant="body1" className="">
+            <strong>Charge Limit:</strong> {chargeLimit}%
+          </Typography>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+  
   );
 };
 
