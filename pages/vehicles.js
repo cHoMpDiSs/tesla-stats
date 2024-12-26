@@ -25,7 +25,11 @@ export default function VehicleData() {
         const data = await vehicleRes.json();
         if (vehicleRes.ok) {
           setVehicleData(data.response);
-        } else {
+        } else if (data.error = "Missing access or refresh token") {
+          refreshToken()
+          fetchVehicleData()
+        
+        } else{
           setError(data.error || "Failed to fetch vehicle data");
         }
       } catch (err) {
@@ -36,39 +40,32 @@ export default function VehicleData() {
     fetchVehicleData();
   }, []);
 
-  useEffect(() => {
-    if (error === "token expired") {
-      async function refreshToken() {
-        try {
-          const response = await fetch("/api/getToken", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+  const refreshToken = async () => {
+    try {
+      const response = await fetch("/api/getToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-          const data = await response.json();
+      const data = await response.json();
 
-          if (response.ok) {
-            console.log("Refresh token successful");
-          } else {
-            console.error(data.error || "Failed to refresh token");
-          }
-        } catch (err) {
-          console.error("Error refreshing token:", err);
-        }
+      if (response.ok) {
+        console.log("Refresh token successful");
+      } else {
+        console.error(data.error || "Failed to refresh token");
       }
-
-      refreshToken();
+    } catch (err) {
+      console.error("Error refreshing token:", err);
     }
-  }, [error]); 
+  };
 
- if (
-    error === "failed to get token" ||
-    error === "Missing access or refresh token"
+  if (
+    error === "login_required"
   ) {
     router.push("/auth");
-    return null;
+    
   } else if (error) {
     return (
       <div className="flex items-center justify-center h-screen bg-red-50">
@@ -149,64 +146,65 @@ export default function VehicleData() {
             vehicleData.length === 1
               ? "grid-cols-1"
               : vehicleData.length === 2
-              ? "grid-cols-2"
-              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                ? "grid-cols-2"
+                : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           }`}
         >
           {vehicleData.map((vehicle) => (
-  <Card
-  key={vehicle.id}
-  className="shadow-lg rounded-lg  hover:shadow-2xl transition-all duration-300 border border-gray-200"
->
-  <CardContent className="p-6">
-    <Box className="mb-4">
-      <Typography variant="h6" className="font-bold ">
-        Model: {vehicle.vin[3]}
-      </Typography>
-      <Typography variant="body2" className="">
-        <strong>ID:</strong> {vehicle.id}
-      </Typography>
-      <Typography variant="body2" className="">
-        <strong>VIN:</strong> {vehicle.vin}
-      </Typography>
-      <Typography variant="body2" className="">
-        <strong>Color:</strong> {vehicle.color || "Midnight Silver"}
-      </Typography>
-      <Typography
-        variant="body2"
-        className={`font-medium ${
-          vehicle.state === "online" ? "text-green-600" : "text-red-500"
-        }`}
-      >
-        <strong>State:</strong> {vehicle.state}
-      </Typography>
-    </Box>
-  </CardContent>
-  <Box className="p-4 flex justify-center">
-    {vehicle.state === "offline" || vehicle.state === "asleep" ? (
-      polling ? (
-        <CircularProgress size={40} color="primary" />
-      ) : (
-        <Button
-          variant="contained"
-          onClick={() => wakeUpAndPoll(vehicle.vin)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-        >
-          Wake Up
-        </Button>
-      )
-    ) : (
-      <Button
-        variant="contained"
-        onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
-        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
-      >
-        View {vehicle.display_name} Data
-      </Button>
-    )}
-  </Box>
-</Card>
-
+            <Card
+              key={vehicle.id}
+              className="shadow-lg rounded-lg  hover:shadow-2xl transition-all duration-300 border border-gray-200"
+            >
+              <CardContent className="p-6">
+                <Box className="mb-4">
+                  <Typography variant="h6" className="font-bold ">
+                    Model: {vehicle.vin[3]}
+                  </Typography>
+                  <Typography variant="body2" className="">
+                    <strong>ID:</strong> {vehicle.id}
+                  </Typography>
+                  <Typography variant="body2" className="">
+                    <strong>VIN:</strong> {vehicle.vin}
+                  </Typography>
+                  <Typography variant="body2" className="">
+                    <strong>Color:</strong> {vehicle.color || "Midnight Silver"}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    className={`font-medium ${
+                      vehicle.state === "online"
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }`}
+                  >
+                    <strong>State:</strong> {vehicle.state}
+                  </Typography>
+                </Box>
+              </CardContent>
+              <Box className="p-4 flex justify-center">
+                {vehicle.state === "offline" || vehicle.state === "asleep" ? (
+                  polling ? (
+                    <CircularProgress size={40} color="primary" />
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={() => wakeUpAndPoll(vehicle.vin)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+                    >
+                      Wake Up
+                    </Button>
+                  )
+                ) : (
+                  <Button
+                    variant="contained"
+                    onClick={() => goToVehiclePage(vehicle.id, vehicle.vin)}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
+                  >
+                    View {vehicle.display_name} Data
+                  </Button>
+                )}
+              </Box>
+            </Card>
           ))}
         </div>
       </div>
