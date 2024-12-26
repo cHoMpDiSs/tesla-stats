@@ -65,7 +65,7 @@ export default function VehicleData() {
     error === "login_required"
   ) {
     router.push("/auth");
-    
+
   } else if (error) {
     return (
       <div className="flex items-center justify-center h-screen bg-red-50">
@@ -79,6 +79,7 @@ export default function VehicleData() {
       </div>
     );
   }
+  
 
   async function wakeUpAndPoll(vin) {
     setPolling(true);
