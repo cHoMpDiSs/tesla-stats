@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 const TirePressure = ({ rl, rr, fl, fr }) => {
   console.log({ rl, rr, fl, fr });
 
