@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# private key
+private-key.pem
+
 # testing
 /coverage
 

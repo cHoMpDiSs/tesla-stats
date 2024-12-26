@@ -61,8 +61,7 @@ export default function VehicleData() {
 
       refreshToken();
     }
-  }, [error]); // Dependency array: triggers when `error` changes
-
+  }, [error]); 
 
  if (
     error === "failed to get token" ||
