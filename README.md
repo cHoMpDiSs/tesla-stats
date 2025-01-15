@@ -1,2 +1,4 @@
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
-# chilli
+Tesla Fleet API Next.js App deployed on Vercel
+# TESLA STATS
+ 
+ www.teslastats.dev
