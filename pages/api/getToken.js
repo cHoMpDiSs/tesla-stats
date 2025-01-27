@@ -20,10 +20,10 @@ export default async function handler(req, res) {
       .json({ error: "Missing required environment variables" });
   }
 
-  // If no refresh token is present, return an error
-  // if (!refreshToken) {
-  //   return res.status(400).json({ error: "No refresh token provided" });
-  // }
+ // If no refresh token is present, return an error
+  if (!refreshToken) {
+    return res.status(400).json({ error: "No refresh token provided" });
+  }
 
   const params = new URLSearchParams();
   params.append("grant_type", "refresh_token");
@@ -76,6 +76,6 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error("Error fetching Tesla token:", error);
-    return res.status(500).json({ error: "Server error while fetching token" });
+    return res.status(500).json({ error: error});
   }
 }

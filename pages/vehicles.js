@@ -27,13 +27,15 @@ export default function VehicleData() {
           setVehicleData(data.response);
         } else if (data.error = "Missing access or refresh token") {
           refreshToken()
-          fetchVehicleData()
+          // fetchVehicleData()
         
         } else{
           setError(data.error || "Failed to fetch vehicle data");
+       
         }
       } catch (err) {
         setError(err.message || "Failed to fetch vehicle data");
+      
       }
     }
 
@@ -54,9 +56,14 @@ export default function VehicleData() {
       if (response.ok) {
         console.log("Refresh token successful");
       } else {
+        if (data.error == "No refresh token provided"){
+          router.push("/auth")
+        }
         console.error(data.error || "Failed to refresh token");
+  
       }
     } catch (err) {
+      
       console.error("Error refreshing token:", err);
     }
   };
