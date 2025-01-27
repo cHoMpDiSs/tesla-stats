@@ -21,9 +21,9 @@ export default async function handler(req, res) {
   }
 
   // If no refresh token is present, return an error
-  if (!refreshToken) {
-    return res.status(400).json({ error: "No refresh token provided" });
-  }
+  // if (!refreshToken) {
+  //   return res.status(400).json({ error: "No refresh token provided" });
+  // }
 
   const params = new URLSearchParams();
   params.append("grant_type", "refresh_token");
