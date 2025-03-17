@@ -79,7 +79,7 @@ export default function VehicleData() {
         <p className="text-red-500 text-lg font-semibold">{error}</p>
       </div>
     );
-  } else if (setPolling) {
+  } else if (polling) {
     return (
       <div className="flex items-center justify-center h-screen">
         <CircularProgress size={60} color="primary" />
