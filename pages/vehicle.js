@@ -145,6 +145,9 @@ console.log(vehicleData)
       </div>
     );
   }
+  else if (error === "Missing access or refresh token"){
+    router.push("/auth")
+  }
 else if (vehicleData)
   return  (
     <div className=" mb-24 py-8 px-4">
