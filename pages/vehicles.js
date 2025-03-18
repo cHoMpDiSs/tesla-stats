@@ -145,7 +145,13 @@ export default function VehicleData() {
     router.push(`/vehicle?id=${id}&vin=${vin}`);
   };
 
-  if (vehicleData){ 
+if(polling){
+return<div className="my-auto text-center">
+<CircularProgress/>
+</div> 
+}
+
+  else if(vehicleData){ 
   return (
     <div className="min-h-screen  py-8 px-4 ">
       <h1 className="text-4xl  text-center mb-8 ">Fleet</h1>
