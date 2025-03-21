@@ -46,6 +46,7 @@ export default function VehicleData() {
   }, []);
 
   const refreshToken = async () => {
+    setPolling(true)
     try {
       const response = await fetch("/api/getToken", {
         method: "POST",
