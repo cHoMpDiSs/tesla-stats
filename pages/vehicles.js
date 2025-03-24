@@ -14,45 +14,45 @@ import modelY from "../public/images/y.png";
 
 export default function VehicleData() {
   const [vehicleData, setVehicleData] = useState(null);
-  const [polling, setPolling] = useState(false);
+  const [polling, setPolling] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
+  let isMounted = true;
+
+  async function fetchVehicleData() {
+    try {
+      const vehicleRes = await fetch("/api/vehicles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await vehicleRes.json();
+      if (!isMounted) return;
+
+      if (vehicleRes.ok) {
+        setVehicleData(data.response);
+        setPolling(false)
+      } else if (data.error === "Missing access or refresh token") {
+        await refreshToken();
+        if (isMounted) fetchVehicleData(); // Retry after refreshing token
+      } else {
+        setError(data.error || "Failed to fetch vehicle data");
+      }
+    } catch (err) {
+      if (isMounted) setError(err.message || "Failed to fetch vehicle data");
+    }
+  }
 
   useEffect(() => {
-    let isMounted = true;
-  
-    async function fetchVehicleData() {
-      try {
-        const vehicleRes = await fetch("/api/vehicles", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-  
-        const data = await vehicleRes.json();
-        if (!isMounted) return;
-  
-        if (vehicleRes.ok) {
-          setVehicleData(data.response);
-        } else if (data.error === "Missing access or refresh token") {
-          await refreshToken();
-          if (isMounted) fetchVehicleData(); // Retry after refreshing token
-        } else {
-          setError(data.error || "Failed to fetch vehicle data");
-        }
-      } catch (err) {
-        if (isMounted) setError(err.message || "Failed to fetch vehicle data");
-      }
-    }
-  
     fetchVehicleData();
-  
+
     return () => {
       isMounted = false;
     };
   }, [polling]); // Runs on mount and when `polling` changes
-  
+
   const refreshToken = async () => {
     try {
       const response = await fetch("/api/getToken", {
@@ -66,6 +66,7 @@ export default function VehicleData() {
 
       if (response.ok) {
         console.log("Refresh token successful");
+        await fetchVehicleData();
       } else {
         if (data.error == "No refresh token provided") {
           router.push("/auth");
@@ -149,16 +150,14 @@ export default function VehicleData() {
   const goToVehiclePage = (id, vin) => {
     router.push(`/vehicle?id=${id}&vin=${vin}`);
   };
-console.log(modelY)
+
   if (polling) {
     return (
       <div className="my-auto text-center">
         <CircularProgress />
       </div>
     );
-
-  } 
-  else if (vehicleData) {
+  } else if (vehicleData) {
     return (
       <div className="min-h-screen  py-8 px-4 mb-32">
         <h1 className="text-4xl  text-center mb-8 ">Fleet</h1>
@@ -177,9 +176,9 @@ console.log(modelY)
                 key={vehicle.id}
                 className="max-w-[30rem] shadow-lg rounded-lg  hover:shadow-2xl transition-all duration-300 border border-gray-200"
               >
-                    <Typography variant="h6" className="font-bold text-center ">
-                      Model {vehicle.vin[3]}
-                    </Typography>
+                <Typography variant="h6" className="font-bold text-center ">
+                  Model {vehicle.vin[3]}
+                </Typography>
                 <CardMedia
                   component="img"
                   height="140"
@@ -188,7 +187,6 @@ console.log(modelY)
                 />
                 <CardContent className="p-6">
                   <Box className="mb-4">
-                
                     <Typography variant="body2" className="">
                       <strong>ID:</strong> {vehicle.id}
                     </Typography>
