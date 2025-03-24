@@ -2,13 +2,12 @@
 import * as React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import TimelineIcon from "@mui/icons-material/Timeline";
-import { Typography } from "@mui/material";
 import { extendTheme, styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { BatteryFullRounded } from "@mui/icons-material";
-import { modelY } from "../public/images/y.png";
+
 
 const NAVIGATION = [
   {
@@ -20,6 +19,11 @@ const NAVIGATION = [
     segment: "vehicles",
     title: "Vehicles",
     icon: <TimelineIcon />,
+  },
+  {
+    segment: "charging",
+    title: "Super Chargers",
+    icon: <BatteryFullRounded />,
   },
 ];
 const demoTheme = extendTheme({
@@ -64,7 +68,7 @@ export default function DashboardProvider(props) {
         
         ),
 
-        logo: <BatteryFullRounded className="mt-2 " />,
+        logo: <BatteryFullRounded className="mt-2 rotate-45" />,
       }}
       navigation={NAVIGATION}
       router={customRouter}

@@ -17,8 +17,9 @@ export default function VehicleData() {
   const [polling, setPolling] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
-
   useEffect(() => {
+    let isMounted = true;
+  
     async function fetchVehicleData() {
       try {
         const vehicleRes = await fetch("/api/vehicles", {
@@ -27,23 +28,30 @@ export default function VehicleData() {
             "Content-Type": "application/json",
           },
         });
-
+  
         const data = await vehicleRes.json();
+        if (!isMounted) return;
+  
         if (vehicleRes.ok) {
           setVehicleData(data.response);
-        } else if ((data.error = "Missing access or refresh token")) {
-          refreshToken();
-          // fetchVehicleData()
+        } else if (data.error === "Missing access or refresh token") {
+          await refreshToken();
+          if (isMounted) fetchVehicleData(); 
         } else {
           setError(data.error || "Failed to fetch vehicle data");
         }
       } catch (err) {
-        setError(err.message || "Failed to fetch vehicle data");
+        if (isMounted) setError(err.message || "Failed to fetch vehicle data");
       }
     }
-
+  
     fetchVehicleData();
-  }, []);
+  
+    return () => {
+      isMounted = false;
+    };
+  }, [polling]); // Runs on mount and when `polling` changes
+  
 
   const refreshToken = async () => {
     setPolling(true)
@@ -59,6 +67,7 @@ export default function VehicleData() {
 
       if (response.ok) {
         console.log("Refresh token successful");
+        setPolling(false)
       } else {
         if (data.error == "No refresh token provided") {
           router.push("/auth");
