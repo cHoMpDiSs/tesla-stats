@@ -19,6 +19,8 @@ export default function VehicleData() {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+  
     async function fetchVehicleData() {
       try {
         const vehicleRes = await fetch("/api/vehicles", {
@@ -27,24 +29,30 @@ export default function VehicleData() {
             "Content-Type": "application/json",
           },
         });
-
+  
         const data = await vehicleRes.json();
+        if (!isMounted) return;
+  
         if (vehicleRes.ok) {
           setVehicleData(data.response);
-        } else if ((data.error = "Missing access or refresh token")) {
-          refreshToken();
-          // fetchVehicleData()
+        } else if (data.error === "Missing access or refresh token") {
+          await refreshToken();
+          if (isMounted) fetchVehicleData(); // Retry after refreshing token
         } else {
           setError(data.error || "Failed to fetch vehicle data");
         }
       } catch (err) {
-        setError(err.message || "Failed to fetch vehicle data");
+        if (isMounted) setError(err.message || "Failed to fetch vehicle data");
       }
     }
-
+  
     fetchVehicleData();
-  }, []);
-
+  
+    return () => {
+      isMounted = false;
+    };
+  }, [polling]); // Runs on mount and when `polling` changes
+  
   const refreshToken = async () => {
     try {
       const response = await fetch("/api/getToken", {
@@ -152,7 +160,7 @@ console.log(modelY)
   } 
   else if (vehicleData) {
     return (
-      <div className="min-h-screen  py-8 px-4 ">
+      <div className="min-h-screen  py-8 px-4 mb-32">
         <h1 className="text-4xl  text-center mb-8 ">Fleet</h1>
         <div className="flex flex-col items-center">
           <div
