@@ -63,7 +63,6 @@ export default function VehicleData() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         console.log("Refresh token successful");
         await fetchVehicleData();
@@ -78,23 +77,7 @@ export default function VehicleData() {
     }
   };
 
-  if (error === "login_required") {
-    router.push("/auth");
-  } else if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-red-50">
-        <p className="text-red-500 text-lg font-semibold">{error}</p>
-      </div>
-    );
-  } else if (polling) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <CircularProgress size={60} color="primary" />
-      </div>
-    );
-  }
-
-  async function wakeUpAndPoll(vin) {
+ async function wakeUpAndPoll(vin) {
     setPolling(true);
     try {
       const wakeUpRes = await fetch(`/api/wakeUp?vin=${vin}`, {
@@ -151,13 +134,26 @@ export default function VehicleData() {
     router.push(`/vehicle?id=${id}&vin=${vin}`);
   };
 
-  if (polling) {
+
+
+
+  if (error === "login_required") {
+    router.push("/auth");
+  } else if (error) {
     return (
-      <div className="my-auto text-center">
-        <CircularProgress />
+      <div className="flex items-center justify-center h-screen bg-red-50">
+        <p className="text-red-500 text-lg font-semibold">{error}</p>
       </div>
     );
-  } else if (vehicleData) {
+  } else if (polling) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <CircularProgress size={60} color="primary" />
+      </div>
+    );
+  }
+
+   else if (vehicleData) {
     return (
       <div className="min-h-screen  py-8 px-4 mb-32">
         <h1 className="text-4xl  text-center mb-8 ">Fleet</h1>
